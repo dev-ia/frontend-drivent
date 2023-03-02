@@ -1,3 +1,7 @@
+import styled from 'styled-components';
+import Typography from '@material-ui/core/Typography';
+import { useState } from 'react';
+
 export default function Payment() {
   const [clicked, setClicked]= useState(false);
 
