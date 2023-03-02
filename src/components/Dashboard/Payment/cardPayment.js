@@ -4,7 +4,7 @@ import 'react-credit-cards/es/styles-compiled.css';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
-export default function CardPayment() {
+export default function CardPaument() {
   const [card, setCard] = useState({
     number: '',
     name: '',
