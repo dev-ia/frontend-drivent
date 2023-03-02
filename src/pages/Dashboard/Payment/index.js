@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useState } from 'react';
+import CardPayment from '../../../components/Dashboard/payment/cardPayment';
 
 export default function Payment() {
   const [clicked, setClicked]= useState(false);
@@ -57,6 +58,7 @@ export default function Payment() {
           </PaymentWrapper>
         </Row>
       </Container>
+      <CardPayment/>
     </>
   );
 }
