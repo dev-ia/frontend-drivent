@@ -1,8 +1,10 @@
+import { Typography } from '@material-ui/core';
 import { useState } from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
+import { ButtonFont, Subtitle } from '../../../pages/Dashboard/Payment';
 
 export default function CardPaument() {
   const [card, setCard] = useState({
@@ -39,6 +41,10 @@ export default function CardPaument() {
 
     console.log(card);
 
+    const newCard = {
+      // em breve
+    };
+
     const { number, name, expiry, cvc } = card;
     if (number === '' || name === '' || expiry === '' || cvc === '') {
       toast('por favor preencha todos os campos');
@@ -46,65 +52,75 @@ export default function CardPaument() {
   };
 
   return (
-    <PaymentForm>
-      <Cards
-        number={card.number}
-        name={card.name}
-        expiry={card.expiry}
-        cvc={card.cvc}
-        callback={handleCallback}
-        focused={card.focus}
-      />
-      <form>
-        <input
-          type="tel"
-          name="number"
-          placeholder="Card Number"
-          value={card.number}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
+    <>
+      <Subtitle>Pagamento</Subtitle>
+      <PaymentForm>
+        <Cards
+          number={card.number}
+          name={card.name}
+          expiry={card.expiry}
+          cvc={card.cvc}
+          callback={handleCallback}
+          focused={card.focus}
         />
-        <p>E.g.: 49..., 51..., 36..., 37...</p>
-        <input
-          type="text"
-          name="name"
-          placeholder="Your name here"
-          value={card.name}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-        />
-        <div className='date-and-cvc'>
+        <form>
           <input
             type="tel"
-            name="expiry"
-            placeholder="Valid Thru"
-            value={card.expiry}
+            name="number"
+            placeholder="Card Number"
+            value={card.number}
             onChange={handleInputChange}
             onFocus={handleInputFocus}
           />
+          <p>E.g.: 49..., 51..., 36..., 37...</p>
           <input
-            type="tel"
-            name="cvc"
-            placeholder="CVC"
-            pattern="\d{3,4}"
-            value={card.cvc}
+            type="text"
+            name="name"
+            placeholder="Your name here"
+            value={card.name}
             onChange={handleInputChange}
             onFocus={handleInputFocus}
           />
-        </div>
-        <button onClick={handleSubmit} >Enviar Pagamento</button>
-      </form>
-    </PaymentForm>
+          <div className='date-and-cvc'>
+            <input
+              type="tel"
+              name="expiry"
+              placeholder="Valid Thru"
+              value={card.expiry}
+              onChange={handleInputChange}
+              onFocus={handleInputFocus}
+            />
+            <input
+              type="tel"
+              name="cvc"
+              placeholder="CVC"
+              pattern="\d{3,4}"
+              value={card.cvc}
+              onChange={handleInputChange}
+              onFocus={handleInputFocus}
+            />
+          </div>
+        </form>
+      </PaymentForm>
+      <PayButton type='submit'>
+        <ButtonFont onClick={handleSubmit}>
+            FINALIZAR PAGAMENTO
+        </ButtonFont>
+      </PayButton>
+    </>
   );
 }
 
 const PaymentForm = styled.div`
+  margin: 17px 0;
   display: flex;
+  justify-content: space-between;
   form{
+    margin: 0 50px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 50%;
+    justify-self: flex-end;
     color: gray;
 
     >p{
@@ -126,10 +142,10 @@ const PaymentForm = styled.div`
     }
 
     >.date-and-cvc{
+      width: 50%;
       display: flex;
       justify-content: space-between;
       height: 20%;
-      
       >input{
         border: solid 1px;
         border-radius: 10px;
@@ -143,4 +159,18 @@ const PaymentForm = styled.div`
     }
     }
   }
+`;
+
+const PayButton = styled.button`
+  position: relative;
+  all: unset;
+  width: 200px;
+  height: 37px;
+  background-color: #E0E0E0;
+  box-shadow: 0px 2px 10px 0px #00000040;
+  border-radius: 4px;
+  align-items:center;
+  text-align:center;
+  cursor:pointer;
+  margin-bottom:97px;
 `;

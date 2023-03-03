@@ -57,8 +57,8 @@ export default function Payment() {
             </ReserveButton>
           </PaymentWrapper>
         </Row>
+        <CardPayment/>
       </Container>
-      <CardPayment/>
     </>
   );
 }
@@ -66,13 +66,11 @@ export default function Payment() {
 export const Container = styled.div`
 display: flex;
 width: 100%;
-height: 100%;
-min-height:100vh;
 flex-wrap: wrap;
 flex-direction:column;
 > div {
   width: calc(50% - 20px);
-  margin: 0 10px 0 0;
+  /* margin: 0 10px 0 0; */
 }
 
 @media (max-width: 600px) {
