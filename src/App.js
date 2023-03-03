@@ -31,7 +31,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Countdown />} />
               <Route path="/enroll" element={<Enroll />} />
-              <Route path="/sign-in" element={<SignIn />} />
+              <Route path="/sign-in" element={<Sig'nIn />} />
 
               <Route
                 path="/dashboard"

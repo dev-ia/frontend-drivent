@@ -39,16 +39,20 @@ export default function Card({ setIsPayed }) {
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    console.log(card);
+    const { number, name, expiry, cvc, issuer } = card;
 
-    const newCard = {
-      // em breve
-    };
-
-    const { number, name, expiry, cvc } = card;
     if (number === '' || name === '' || expiry === '' || cvc === '') {
       return toast('por favor preencha todos os campos');
     }
+
+    const newCard = {
+      issuer,
+      number,
+      name,
+      expirationDate: expiry,
+      cvv: cvc
+    };
+
     setIsPayed(true);
   };
 
