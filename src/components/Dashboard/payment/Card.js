@@ -1,12 +1,12 @@
-import { Typography } from '@material-ui/core';
 import { useState } from 'react';
 import Cards from 'react-credit-cards';
-import 'react-credit-cards/es/styles-compiled.css';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { ButtonFont, Subtitle } from '../../../pages/Dashboard/Payment';
 
-export default function CardPaument() {
+import 'react-credit-cards/es/styles-compiled.css';
+import { ButtonFont } from '../../../pages/Dashboard/Payment';
+
+export default function Card({ setIsPayed }) {
   const [card, setCard] = useState({
     number: '',
     name: '',
@@ -47,13 +47,13 @@ export default function CardPaument() {
 
     const { number, name, expiry, cvc } = card;
     if (number === '' || name === '' || expiry === '' || cvc === '') {
-      toast('por favor preencha todos os campos');
+      return toast('por favor preencha todos os campos');
     }
+    setIsPayed(true);
   };
 
   return (
     <>
-      <Subtitle>Pagamento</Subtitle>
       <PaymentForm>
         <Cards
           number={card.number}
@@ -104,7 +104,7 @@ export default function CardPaument() {
       </PaymentForm>
       <PayButton type='submit'>
         <ButtonFont onClick={handleSubmit}>
-            FINALIZAR PAGAMENTO
+          FINALIZAR PAGAMENTO
         </ButtonFont>
       </PayButton>
     </>
@@ -112,7 +112,7 @@ export default function CardPaument() {
 }
 
 const PaymentForm = styled.div`
-  margin: 17px 0;
+  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   form{
