@@ -22,6 +22,7 @@ import { InputWrapper } from './InputWrapper';
 import { ErrorMsg } from './ErrorMsg';
 import { ufList } from './ufList';
 import FormValidations from './FormValidations';
+import { useNavigate } from 'react-router-dom';
 
 dayjs.extend(CustomParseFormat);
 
@@ -30,6 +31,7 @@ export default function PersonalInformationForm() {
   const { getCep } = useCep();
   const { enrollment } = useEnrollment();
   const { saveEnrollmentLoading, saveEnrollment } = useSaveEnrollment();
+  const navigate = useNavigate();
 
   const { handleSubmit, handleChange, data, errors, setData, customHandleChange } = useForm({
     validations: FormValidations,
@@ -53,6 +55,7 @@ export default function PersonalInformationForm() {
 
       try {
         await saveEnrollment(newData);
+        navigate('/dashboard/payment');
         toast('Informações salvas com sucesso!');
       } catch (err) {
         toast('Não foi possível salvar suas informações!');

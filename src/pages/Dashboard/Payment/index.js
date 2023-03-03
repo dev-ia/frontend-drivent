@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useState } from 'react';
-import { FaBlackTie } from 'react-icons/fa';
+//import { FaBlackTie } from 'react-icons/fa';
 
 export default function Payment() {
   const [clickedButtonFirstSection, setClickedButtonFirstSection] = useState(0);
