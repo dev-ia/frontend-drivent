@@ -10,7 +10,7 @@ import EventInfoContext from '../../contexts/EventInfoContext';
 
 export default function Countdown() {
   const { eventInfo, loadingEventInfo } = useContext(EventInfoContext);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //hook to go another page in a function
   const countdownOver = useIsDateAfter(eventInfo?.startsAt);
 
   useEffect(() => {
