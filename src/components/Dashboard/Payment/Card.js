@@ -5,11 +5,9 @@ import styled from 'styled-components';
 
 import 'react-credit-cards/es/styles-compiled.css';
 import { ButtonFont } from '../Reservation';
-import usePayment from '../../../hooks/api/usePayment';
+import { payWithCard } from '../../../services/paymentApi';
 
 export default function Card({ setIsPayed, userData }) {
-  const { postPayment } = usePayment();
-
   const [card, setCard] = useState({
     number: '',
     name: '',
@@ -60,7 +58,9 @@ export default function Card({ setIsPayed, userData }) {
     };
 
     try {
-      await postPayment(ticketId, cardData, token);
+      const response = await payWithCard(ticketId, cardData, token);
+      console.log(response);
+
       toast('pagamento realizado com sucesso!');
     } catch (error) {
       toast('não foi possivel realizar o pagamento. Tente novamente mais tarde!');
