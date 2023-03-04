@@ -5,8 +5,9 @@ import styled from 'styled-components';
 
 import 'react-credit-cards/es/styles-compiled.css';
 import { ButtonFont } from '../Reservation';
+import { payWithCard } from '../../../services/paymentApi';
 
-export default function Card({ setIsPayed }) {
+export default function Card({ setIsPayed, userData }) {
   const [card, setCard] = useState({
     number: '',
     name: '',
@@ -36,22 +37,34 @@ export default function Card({ setIsPayed }) {
     setCard((prev) => ({ ...prev, focus: evt.target.name }));
   };
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async(evt) => {
     evt.preventDefault();
 
+    const ticketId = 241;
+
+    const { token } = userData;
     const { number, name, expiry, cvc, issuer } = card;
 
     if (number === '' || name === '' || expiry === '' || cvc === '') {
       return toast('por favor preencha todos os campos');
     }
 
-    const newCard = {
+    const cardData = {
       issuer,
       number,
       name,
       expirationDate: expiry,
       cvv: cvc
     };
+
+    try {
+      const response = await payWithCard(ticketId, cardData, token);
+      console.log(response);
+
+      toast('pagamento realizado com sucesso!');
+    } catch (error) {
+      toast('não foi possivel realizar o pagamento. Tente novamente mais tarde!');
+    }
 
     setIsPayed(true);
   };

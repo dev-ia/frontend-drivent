@@ -1,13 +1,15 @@
 import { Typography } from '@material-ui/core';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Card from './Card';
 import Confirmation from './Confirmation';
 import { GreyFont, PriceFont } from '../Reservation';
+import UserContext from '../../../contexts/UserContext';
 
 export default function PaymentCard() {
   const [isPayed, setIsPayed] = useState(false);
-
+  const { userData } = useContext(UserContext);
+  
   return (
     <>
       <Subtitle>Ingresso Escolhido</Subtitle>
@@ -17,7 +19,7 @@ export default function PaymentCard() {
       </SelectedTicket>
       <Subtitle>Pagamento</Subtitle>
       {isPayed === false ?
-        <Card setIsPayed={setIsPayed} />
+        <Card setIsPayed={setIsPayed} userData={userData} />
         :
         <Confirmation />}
     </>
