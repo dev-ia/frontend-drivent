@@ -4,15 +4,19 @@ import { useState } from 'react';
 //import { FaBlackTie } from 'react-icons/fa';
 import PaymentCard from '../../../components/Dashboard/Payment';
 import Reservation from '../../../components/Dashboard/Reservation';
+import ErrorMsg from '../../../components/Dashboard/Payment/notEnrolled';
 
 export default function Payment() {
   const [isReserved, setIsReserved] = useState(false);
+  const [isEnrolled, setIsEnrolled] = useState(false);
 
   return (
     <>
       <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
       <Container>
-        {isReserved === false ? <Reservation setIsReserved={setIsReserved} /> : <PaymentCard />}
+        {isEnrolled === false ? <ErrorMsg setIsEnrolled= {setIsEnrolled}/> : <></>}
+        {isEnrolled === true && isReserved === false ? <PaymentCard/> : <></>}
+        {isReserved === false && isEnrolled === true ? <Reservation setIsReserved={setIsReserved} /> : <> </>}
       </Container>
     </>
   );
