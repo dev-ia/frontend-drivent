@@ -1,21 +1,48 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
-import { useState } from 'react';
-//import { FaBlackTie } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import { getTickets } from '../../../services/ticketTypeApi';
+import useToken from '../../../hooks/useToken';
+//preciso do preco do online e do presencial
+//hipotese: crio no bd através do thunder client
+//faco a requisicao do preco
+//tento achar alguma funcao que retorna preco ou objeto com preco
+//n achei: crio uma rota que faca isso no back
+//faco a requisicao da rota
+//mostro nos cards
 
 export default function Payment() {
-  const [clickedButtonFirstSection, setClickedButtonFirstSection] = useState(0);
-  const [clickedButtonSecondSection, setClickedButtonSecondSection] = useState(0);
+  const [clickedButtonFirstSection, setClickedButtonFirstSection] = useState(-1);
+  const [clickedButtonSecondSection, setClickedButtonSecondSection] = useState(-1);
   const [isEnableDisplaySecondSection, setIsEnableDisplaySecondSection] = useState(false);
   const [isEnableDisplayThirdSection, setIsEnableDisplayThirdSection] = useState(false);
-  //let buttonClickedFirstSection = -1;
+  const [ticketTypesArray, setTicketTypesArray] = useState([]);
+  const [totalValue, setTotalValue] = useState(0);
+  const token = useToken();
+  const hotelValue = {
+    remote: 0,
+    presencial: 350,
+  };
+
+  useEffect(async() => {
+    try {
+      let arrayTicketTypesRequest = await getTickets(token);
+      setTicketTypesArray(arrayTicketTypesRequest);
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  }, []);
 
   const changeButtonFirstSection = (buttonClickedFirstSection) => {
     setClickedButtonFirstSection(buttonClickedFirstSection);
-    if (buttonClickedFirstSection === 1) {
+    if (buttonClickedFirstSection === 0) {
+      setTotalValue(ticketTypesArray[0].price);
+      setClickedButtonSecondSection(-1);
       setIsEnableDisplaySecondSection(true);
       setIsEnableDisplayThirdSection(false);
-    } else if (buttonClickedFirstSection === 2) {
+    } else if (buttonClickedFirstSection === 1) {
+      setClickedButtonSecondSection(-1);
+      setTotalValue(ticketTypesArray[0].price);
       setIsEnableDisplaySecondSection(false);
       setIsEnableDisplayThirdSection(true);
     }
@@ -24,7 +51,30 @@ export default function Payment() {
   const changeButtonSecondSection = (buttonClickedSecondSection) => {
     setClickedButtonSecondSection(buttonClickedSecondSection);
     setIsEnableDisplayThirdSection(true);
+    const ticketPrice = ticketTypesArray[buttonClickedSecondSection].price;
+    buttonClickedSecondSection === 0 ? setTotalValue(ticketPrice) : setTotalValue(ticketPrice + hotelValue.presencial);
   };
+
+  function arrayOfButtonsTicketType() {
+    let arrayButtons = [];
+
+    for (let i = 0; i < ticketTypesArray.length; i++) {
+      arrayButtons.push(
+        <li key={i}>
+          <SelectionButton
+            type="submit"
+            onClick={() => changeButtonFirstSection(i)}
+            className={clickedButtonFirstSection === i ? 'clicked' : 'notClicked'}
+          >
+            <GreyFont>{ticketTypesArray[i].name}</GreyFont>
+            <PriceFont>{ticketTypesArray[i].price}</PriceFont>
+          </SelectionButton>
+        </li>
+      );
+    }
+
+    return arrayButtons;
+  }
 
   return (
     <>
@@ -33,39 +83,25 @@ export default function Payment() {
         <Row isDisplay={true}>
           <Subtitle> Primeiro, escolha sua modalidade de ingresso </Subtitle>
           <PaymentWrapper>
-            <SelectionButton
-              type="submit"
-              onClick={() => changeButtonFirstSection(1)}
-              className={clickedButtonFirstSection === 1 ? 'clicked' : 'notClicked'}
-            >
-              <GreyFont>Presencial</GreyFont>
-              <PriceFont>R$ 250</PriceFont>
-            </SelectionButton>
-            <SelectionButton
-              type="submit"
-              onClick={() => changeButtonFirstSection(2)}
-              className={clickedButtonFirstSection === 2 ? 'clicked' : 'notClicked'}
-            >
-              <GreyFont>Online</GreyFont>
-              <PriceFont>R$ 100</PriceFont>
-            </SelectionButton>
+            <ul>{arrayOfButtonsTicketType()}</ul>
           </PaymentWrapper>
         </Row>
+
         <Row isDisplay={isEnableDisplaySecondSection}>
           <Subtitle> Ótimo! Agora escolha sua modalidade de hospedagem</Subtitle>
           <PaymentWrapper>
             <SelectionButton
               type="submit"
-              onClick={() => changeButtonSecondSection(1)}
-              className={clickedButtonSecondSection === 1 ? 'clicked' : 'notClicked'}
+              onClick={() => changeButtonSecondSection(0)}
+              className={clickedButtonSecondSection === 0 ? 'clicked' : 'notClicked'}
             >
               <GreyFont>Sem Hotel</GreyFont>
               <PriceFont>+ R$ 0</PriceFont>
             </SelectionButton>
             <SelectionButton
               type="submit"
-              onClick={() => changeButtonSecondSection(2)}
-              className={clickedButtonSecondSection === 2 ? 'clicked' : 'notClicked'}
+              onClick={() => changeButtonSecondSection(1)}
+              className={clickedButtonSecondSection === 1 ? 'clicked' : 'notClicked'}
             >
               <GreyFont>Com Hotel</GreyFont>
               <PriceFont>+ R$ 350</PriceFont>
@@ -73,7 +109,7 @@ export default function Payment() {
           </PaymentWrapper>
         </Row>
         <Row isDisplay={isEnableDisplayThirdSection}>
-          <Subtitle>Fechado! O total ficou em R$ 600. Agora é só confirmar:</Subtitle>
+          <Subtitle>Fechado! O total ficou em R$ {totalValue}. Agora é só confirmar:</Subtitle>
           <PaymentWrapper>
             <ReserveButton type="submit">
               <ButtonFont>RESERVAR INGRESSO</ButtonFont>
