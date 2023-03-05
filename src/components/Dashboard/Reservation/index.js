@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useState } from 'react';
+import useTicketType from '../../../hooks/api/useTicketType';
 //import { FaBlackTie } from 'react-icons/fa';
 
 export default function Reservation({ setIsReserved }) {
@@ -9,6 +10,28 @@ export default function Reservation({ setIsReserved }) {
   const [isEnableDisplaySecondSection, setIsEnableDisplaySecondSection] = useState(false);
   const [isEnableDisplayThirdSection, setIsEnableDisplayThirdSection] = useState(false);
   //let buttonClickedFirstSection = -1;
+
+  const [isReservation, setIsReservation] = useState(false);
+  const { ticketType } = useTicketType();
+  const [ticketTypeObject, setTicketTypeObject] = useState({
+    name: '',
+    price: 0,
+    isRemote: true,
+    includesHotel: false,
+  });
+
+  function selectOptions(callback) {
+    if (callback === 1) {
+      setTicketTypeObject({ ...ticketTypeObject, name: '', price: 250, isRemote: false, includesHotel: false });
+    } else if (callback === 2) {
+      setTicketTypeObject({ ...ticketTypeObject, name: '', price: 100, isRemote: true, includesHotel: false });
+    }
+  }
+
+  function reservation() {
+    ticketType(ticketTypeObject);
+    setIsReservation(true);
+  }
 
   const changeButtonFirstSection = (buttonClickedFirstSection) => {
     setClickedButtonFirstSection(buttonClickedFirstSection);
@@ -38,7 +61,10 @@ export default function Reservation({ setIsReserved }) {
         <PaymentWrapper>
           <SelectionButton
             type="submit"
-            onClick={() => changeButtonFirstSection(1)}
+            onClick={() => {
+              changeButtonFirstSection(1);
+              selectOptions(1);
+            }}
             className={clickedButtonFirstSection === 1 ? 'clicked' : 'notClicked'}
           >
             <GreyFont>Presencial</GreyFont>
@@ -46,7 +72,10 @@ export default function Reservation({ setIsReserved }) {
           </SelectionButton>
           <SelectionButton
             type="submit"
-            onClick={() => changeButtonFirstSection(2)}
+            onClick={() => {
+              changeButtonFirstSection(2);
+              selectOptions(2);
+            }}
             className={clickedButtonFirstSection === 2 ? 'clicked' : 'notClicked'}
           >
             <GreyFont>Online</GreyFont>
@@ -59,7 +88,10 @@ export default function Reservation({ setIsReserved }) {
         <PaymentWrapper>
           <SelectionButton
             type="submit"
-            onClick={() => changeButtonSecondSection(1)}
+            onClick={() => {
+              changeButtonSecondSection(1);
+              setTicketTypeObject({ ...ticketTypeObject, price: 250 });
+            }}
             className={clickedButtonSecondSection === 1 ? 'clicked' : 'notClicked'}
           >
             <GreyFont>Sem Hotel</GreyFont>
@@ -67,7 +99,10 @@ export default function Reservation({ setIsReserved }) {
           </SelectionButton>
           <SelectionButton
             type="submit"
-            onClick={() => changeButtonSecondSection(2)}
+            onClick={() => {
+              changeButtonSecondSection(2);
+              setTicketTypeObject({ ...ticketTypeObject, price: 600, includesHotel: true });
+            }}
             className={clickedButtonSecondSection === 2 ? 'clicked' : 'notClicked'}
           >
             <GreyFont>Com Hotel</GreyFont>
@@ -76,10 +111,10 @@ export default function Reservation({ setIsReserved }) {
         </PaymentWrapper>
       </Row>
       <Row isDisplay={isEnableDisplayThirdSection}>
-        <Subtitle>Fechado! O total ficou em R$ 600. Agora é só confirmar:</Subtitle>
+        <Subtitle>{`Fechado! O total ficou em R$ ${ticketTypeObject.price}. Agora é só confirmar:`}</Subtitle>
         <PaymentWrapper>
-          <ReserveButton type="submit" onClick={(evt) => handleSubmit(evt)} >
-            <ButtonFont>RESERVAR INGRESSO</ButtonFont>
+          <ReserveButton type="submit" onClick={(evt) => handleSubmit(evt)}>
+            <ButtonFont onClick={() => reservation()}>RESERVAR INGRESSO</ButtonFont>
           </ReserveButton>
         </PaymentWrapper>
       </Row>
