@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useState } from 'react';
+import useTicketType from '../../../hooks/api/useTicketType';
 //import { FaBlackTie } from 'react-icons/fa';
 
 export default function Payment() {
@@ -8,6 +9,14 @@ export default function Payment() {
   const [clickedButtonSecondSection, setClickedButtonSecondSection] = useState(0);
   const [isEnableDisplaySecondSection, setIsEnableDisplaySecondSection] = useState(false);
   const [isEnableDisplayThirdSection, setIsEnableDisplayThirdSection] = useState(false);
+  const [isReservation, setIsReservation] = useState(false);
+  const { ticketType } = useTicketType();
+  const [ticketTypeObject, setTicketTypeObject] = useState({
+    name: '',
+    price: 0,
+    isRemote: true,
+    includesHotel: false,
+  });
   //let buttonClickedFirstSection = -1;
 
   const changeButtonFirstSection = (buttonClickedFirstSection) => {
@@ -26,61 +35,90 @@ export default function Payment() {
     setIsEnableDisplayThirdSection(true);
   };
 
+  function selectOptions(callback) {
+    if (callback === 1) {
+      setTicketTypeObject({ ...ticketTypeObject, name: '', price: 250, isRemote: false, includesHotel: false });
+    } else if (callback === 2) {
+      setTicketTypeObject({ ...ticketTypeObject, name: '', price: 100, isRemote: true, includesHotel: false });
+    }
+  }
+
+  function reservation() {
+    ticketType(ticketTypeObject);
+    setIsReservation(true);
+  }
+
   return (
     <>
       <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
-      <Container>
-        <Row isDisplay={true}>
-          <Subtitle> Primeiro, escolha sua modalidade de ingresso </Subtitle>
-          <PaymentWrapper>
-            <SelectionButton
-              type="submit"
-              onClick={() => changeButtonFirstSection(1)}
-              className={clickedButtonFirstSection === 1 ? 'clicked' : 'notClicked'}
-            >
-              <GreyFont>Presencial</GreyFont>
-              <PriceFont>R$ 250</PriceFont>
-            </SelectionButton>
-            <SelectionButton
-              type="submit"
-              onClick={() => changeButtonFirstSection(2)}
-              className={clickedButtonFirstSection === 2 ? 'clicked' : 'notClicked'}
-            >
-              <GreyFont>Online</GreyFont>
-              <PriceFont>R$ 100</PriceFont>
-            </SelectionButton>
-          </PaymentWrapper>
-        </Row>
-        <Row isDisplay={isEnableDisplaySecondSection}>
-          <Subtitle> Ótimo! Agora escolha sua modalidade de hospedagem</Subtitle>
-          <PaymentWrapper>
-            <SelectionButton
-              type="submit"
-              onClick={() => changeButtonSecondSection(1)}
-              className={clickedButtonSecondSection === 1 ? 'clicked' : 'notClicked'}
-            >
-              <GreyFont>Sem Hotel</GreyFont>
-              <PriceFont>+ R$ 0</PriceFont>
-            </SelectionButton>
-            <SelectionButton
-              type="submit"
-              onClick={() => changeButtonSecondSection(2)}
-              className={clickedButtonSecondSection === 2 ? 'clicked' : 'notClicked'}
-            >
-              <GreyFont>Com Hotel</GreyFont>
-              <PriceFont>+ R$ 350</PriceFont>
-            </SelectionButton>
-          </PaymentWrapper>
-        </Row>
-        <Row isDisplay={isEnableDisplayThirdSection}>
-          <Subtitle>Fechado! O total ficou em R$ 600. Agora é só confirmar:</Subtitle>
-          <PaymentWrapper>
-            <ReserveButton type="submit">
-              <ButtonFont>RESERVAR INGRESSO</ButtonFont>
-            </ReserveButton>
-          </PaymentWrapper>
-        </Row>
-      </Container>
+      {!isReservation ? (
+        <Container>
+          <Row isDisplay={true}>
+            <Subtitle> Primeiro, escolha sua modalidade de ingresso </Subtitle>
+            <PaymentWrapper>
+              <SelectionButton
+                type="submit"
+                onClick={() => {
+                  changeButtonFirstSection(1);
+                  selectOptions(1);
+                }}
+                className={clickedButtonFirstSection === 1 ? 'clicked' : 'notClicked'}
+              >
+                <GreyFont>Presencial</GreyFont>
+                <PriceFont>R$ 250</PriceFont>
+              </SelectionButton>
+              <SelectionButton
+                type="submit"
+                onClick={() => {
+                  changeButtonFirstSection(2);
+                  selectOptions(2);
+                }}
+                className={clickedButtonFirstSection === 2 ? 'clicked' : 'notClicked'}
+              >
+                <GreyFont>Online</GreyFont>
+                <PriceFont>R$ 100</PriceFont>
+              </SelectionButton>
+            </PaymentWrapper>
+          </Row>
+          <Row isDisplay={isEnableDisplaySecondSection}>
+            <Subtitle> Ótimo! Agora escolha sua modalidade de hospedagem</Subtitle>
+            <PaymentWrapper>
+              <SelectionButton
+                type="submit"
+                onClick={() => {
+                  changeButtonSecondSection(1);
+                  setTicketTypeObject({ ...ticketTypeObject, price: 250 });
+                }}
+                className={clickedButtonSecondSection === 1 ? 'clicked' : 'notClicked'}
+              >
+                <GreyFont>Sem Hotel</GreyFont>
+                <PriceFont>+ R$ 0</PriceFont>
+              </SelectionButton>
+              <SelectionButton
+                type="submit"
+                onClick={() => {
+                  changeButtonSecondSection(2);
+                  setTicketTypeObject({ ...ticketTypeObject, price: 600, includesHotel: true });
+                }}
+                className={clickedButtonSecondSection === 2 ? 'clicked' : 'notClicked'}
+              >
+                <GreyFont>Com Hotel</GreyFont>
+                <PriceFont>+ R$ 350</PriceFont>
+              </SelectionButton>
+            </PaymentWrapper>
+          </Row>
+          <Row isDisplay={isEnableDisplayThirdSection}>
+            <Subtitle>{`Fechado! O total ficou em R$ ${ticketTypeObject.price}. Agora é só confirmar:`}</Subtitle>
+            <PaymentWrapper>
+              <ReserveButton type="submit">
+                <ButtonFont onClick={() => reservation()}>RESERVAR INGRESSO</ButtonFont>
+              </ReserveButton>
+            </PaymentWrapper>
+          </Row>
+        </Container>
+      ) : (
+        <h1> reservado </h1>
+      )}
     </>
   );
 }
