@@ -3,11 +3,9 @@ import styled from 'styled-components';
 export default function ErrorMsg() {
   return (
     <>
-      <Row>
-        <ValidationContainer>
-          <ValidationFont>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</ValidationFont>
-        </ValidationContainer>
-      </Row>
+      <ValidationContainer>
+        <ValidationFont>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</ValidationFont>
+      </ValidationContainer>
     </>
   );
 }
@@ -22,21 +20,24 @@ export const ValidationFont = styled.span`
   color: #8E8E8E;
 
 `;
-export const Row = styled.div`
-  justify-content: center;
-  width: 100%;
-`;
 
 export const ValidationContainer = styled.div`
   display: flex;
   width: 100%;
+  height: calc(100% - 80px);
   flex-wrap: wrap;
   word-wrap:normal;
   justify-content:center;
-  flex-direction: center;
+  flex-direction: column;
   align-items: center;
-
-  @media (max-width: 700px) {
-    width: 100%;
+  gap:4px;
+  > span {
+    width: 500px;
+  }
+  @media (max-width: 600px) {
+    > span {
+      width: 100%;
+      padding: 20px !important;
+    }
   }
 `;
