@@ -3,6 +3,10 @@ import Typography from '@material-ui/core/Typography';
 import { useState, useEffect } from 'react';
 import { getTickets } from '../../../services/ticketTypeApi';
 import useToken from '../../../hooks/useToken';
+import { creatingBooking } from '../../../services/bookingApi';
+import { useContext } from 'react';
+import UserContext from '../../../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 //preciso do preco do online e do presencial
 //hipotese: crio no bd através do thunder client
 //faco a requisicao do preco
@@ -12,6 +16,7 @@ import useToken from '../../../hooks/useToken';
 //mostro nos cards
 
 export default function Payment() {
+  const roomId = 1;
   const [clickedButtonFirstSection, setClickedButtonFirstSection] = useState(-1);
   const [clickedButtonSecondSection, setClickedButtonSecondSection] = useState(-1);
   const [isEnableDisplaySecondSection, setIsEnableDisplaySecondSection] = useState(false);
@@ -19,12 +24,16 @@ export default function Payment() {
   const [ticketTypesArray, setTicketTypesArray] = useState([]);
   const [totalValue, setTotalValue] = useState(0);
   const token = useToken();
+  const { userData } = useContext(UserContext);
+  const userId = userData.user.id;
+  console.log(userData);
+
   const hotelValue = {
     remote: 0,
     presencial: 350,
   };
 
-  useEffect(async() => {
+  useEffect(async () => {
     try {
       let arrayTicketTypesRequest = await getTickets(token);
       setTicketTypesArray(arrayTicketTypesRequest);
@@ -51,7 +60,7 @@ export default function Payment() {
   const changeButtonSecondSection = (buttonClickedSecondSection) => {
     setClickedButtonSecondSection(buttonClickedSecondSection);
     setIsEnableDisplayThirdSection(true);
-    const ticketPrice = ticketTypesArray[buttonClickedSecondSection].price;
+    const ticketPrice = ticketTypesArray[clickedButtonFirstSection].price;
     buttonClickedSecondSection === 0 ? setTotalValue(ticketPrice) : setTotalValue(ticketPrice + hotelValue.presencial);
   };
 
@@ -60,20 +69,24 @@ export default function Payment() {
 
     for (let i = 0; i < ticketTypesArray.length; i++) {
       arrayButtons.push(
-        <li key={i}>
-          <SelectionButton
-            type="submit"
-            onClick={() => changeButtonFirstSection(i)}
-            className={clickedButtonFirstSection === i ? 'clicked' : 'notClicked'}
-          >
-            <GreyFont>{ticketTypesArray[i].name}</GreyFont>
-            <PriceFont>{ticketTypesArray[i].price}</PriceFont>
-          </SelectionButton>
-        </li>
+        <SelectionButton
+          key={i}
+          type="submit"
+          onClick={() => changeButtonFirstSection(i)}
+          className={clickedButtonFirstSection === i ? 'clicked' : 'notClicked'}
+        >
+          <GreyFont>{ticketTypesArray[i].name}</GreyFont>
+          <PriceFont>{ticketTypesArray[i].price}</PriceFont>
+        </SelectionButton>
       );
     }
 
     return arrayButtons;
+  }
+
+  async function reserveTicket() {
+    // const navigate = useNavigate();
+    // navigate('/');
   }
 
   return (
@@ -82,9 +95,7 @@ export default function Payment() {
       <Container>
         <Row isDisplay={true}>
           <Subtitle> Primeiro, escolha sua modalidade de ingresso </Subtitle>
-          <PaymentWrapper>
-            <ul>{arrayOfButtonsTicketType()}</ul>
-          </PaymentWrapper>
+          <PaymentWrapper>{arrayOfButtonsTicketType()}</PaymentWrapper>
         </Row>
 
         <Row isDisplay={isEnableDisplaySecondSection}>
@@ -112,7 +123,7 @@ export default function Payment() {
           <Subtitle>Fechado! O total ficou em R$ {totalValue}. Agora é só confirmar:</Subtitle>
           <PaymentWrapper>
             <ReserveButton type="submit">
-              <ButtonFont>RESERVAR INGRESSO</ButtonFont>
+              <ButtonFont onClick={() => reserveTicket()}>RESERVAR INGRESSO</ButtonFont>
             </ReserveButton>
           </PaymentWrapper>
         </Row>
