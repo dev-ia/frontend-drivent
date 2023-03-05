@@ -33,7 +33,7 @@ export default function Payment() {
     presencial: 350,
   };
 
-  useEffect(async () => {
+  useEffect(async() => {
     try {
       let arrayTicketTypesRequest = await getTickets(token);
       setTicketTypesArray(arrayTicketTypesRequest);
