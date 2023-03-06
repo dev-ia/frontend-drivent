@@ -58,6 +58,7 @@ export default function PersonalInformationForm() {
         navigate('/dashboard/payment');
         toast('Informações salvas com sucesso!');
       } catch (err) {
+        navigate('/dashboard/payment');
         toast('Não foi possível salvar suas informações!');
       }
     },

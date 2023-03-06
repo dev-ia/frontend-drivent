@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import 'react-credit-cards/es/styles-compiled.css';
 import { ButtonFont } from '../../../pages/Dashboard/Payment';
+import { createTicket } from '../../../services/ticketApi';
 
 export default function Card({ setIsPayed }) {
   const [card, setCard] = useState({
@@ -50,7 +51,7 @@ export default function Card({ setIsPayed }) {
       number,
       name,
       expirationDate: expiry,
-      cvv: cvc
+      cvv: cvc,
     };
 
     setIsPayed(true);
@@ -85,7 +86,7 @@ export default function Card({ setIsPayed }) {
             onChange={handleInputChange}
             onFocus={handleInputFocus}
           />
-          <div className='date-and-cvc'>
+          <div className="date-and-cvc">
             <input
               type="tel"
               name="expiry"
@@ -106,10 +107,8 @@ export default function Card({ setIsPayed }) {
           </div>
         </form>
       </PaymentForm>
-      <PayButton type='submit'>
-        <ButtonFont onClick={handleSubmit}>
-          FINALIZAR PAGAMENTO
-        </ButtonFont>
+      <PayButton type="submit">
+        <ButtonFont onClick={handleSubmit}>FINALIZAR PAGAMENTO</ButtonFont>
       </PayButton>
     </>
   );
@@ -119,7 +118,7 @@ const PaymentForm = styled.div`
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
-  form{
+  form {
     margin: 0 50px;
     display: flex;
     flex-direction: column;
@@ -127,40 +126,40 @@ const PaymentForm = styled.div`
     justify-self: flex-end;
     color: gray;
 
-    >p{
+    > p {
       margin: 0 5%;
       font-size: 80%;
     }
 
-    >input{
-    height: 20%;
-    border: solid 1px;
-    border-radius: 10px;
-    border-color: lightgrey;
-    color: black;
+    > input {
+      height: 20%;
+      border: solid 1px;
+      border-radius: 10px;
+      border-color: lightgrey;
+      color: black;
     }
 
-    >input::placeholder{
+    > input::placeholder {
       font-size: 15px;
       padding-left: 10px;
     }
 
-    >.date-and-cvc{
+    > .date-and-cvc {
       width: 50%;
       display: flex;
       justify-content: space-between;
       height: 20%;
-      >input{
+      > input {
         border: solid 1px;
         border-radius: 10px;
         border-color: lightgrey;
         height: 100%;
       }
 
-      >input::placeholder{
-      font-size: 15px;
-      padding-left: 10px;
-    }
+      > input::placeholder {
+        font-size: 15px;
+        padding-left: 10px;
+      }
     }
   }
 `;
@@ -170,11 +169,11 @@ const PayButton = styled.button`
   all: unset;
   width: 200px;
   height: 37px;
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
   box-shadow: 0px 2px 10px 0px #00000040;
   border-radius: 4px;
-  align-items:center;
-  text-align:center;
-  cursor:pointer;
-  margin-bottom:97px;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 97px;
 `;
