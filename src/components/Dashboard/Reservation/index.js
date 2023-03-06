@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useState, useEffect } from 'react';
-import { getTickets } from '../../../services/ticketTypeApi';
+import { getTickets, getTicketTypes } from '../../../services/ticketTypeApi';
 import useToken from '../../../hooks/useToken';
 import { createTicket } from '../../../services/ticketApi';
 import { createTicketType } from '../../../services/ticketTypeApi';
 import { toast } from 'react-toastify';
+import useTicket from '../../../hooks/api/useTicket';
 
 export default function Reservation({ setIsReserved }) {
   const [clickedButtonFirstSection, setClickedButtonFirstSection] = useState(-1);
@@ -24,7 +25,7 @@ export default function Reservation({ setIsReserved }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        let arrayTicketTypesRequest = await getTickets(token);
+        let arrayTicketTypesRequest = await getTicketTypes(token);
 
         setTicketTypesArray(arrayTicketTypesRequest);
       } catch (err) {
@@ -86,7 +87,7 @@ export default function Reservation({ setIsReserved }) {
       try {
         //createTicketType(token, bodyTicketType);
         await createTicket(bodyTicket, token);
-        return toast('ticket created!');
+        return toast('ingresso reservado!');
       } catch (err) {
         console.log(err.data);
       }
@@ -97,7 +98,7 @@ export default function Reservation({ setIsReserved }) {
     createTicketInDB();
   }
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async(evt) => {
     evt.preventDefault();
     setIsReserved(true);
   };

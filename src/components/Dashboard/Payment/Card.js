@@ -6,6 +6,9 @@ import styled from 'styled-components';
 import 'react-credit-cards/es/styles-compiled.css';
 import { ButtonFont } from '../Reservation/index';
 import { payWithCard } from '../../../services/paymentApi';
+import useTicket from '../../../hooks/api/useTicket';
+import useToken from '../../../hooks/useToken';
+import { getTickets } from '../../../services/ticketApi';
 
 export default function Card({ setIsPayed, userData }) {
   const [card, setCard] = useState({
