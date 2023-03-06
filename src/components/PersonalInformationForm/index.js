@@ -26,7 +26,7 @@ import { useNavigate } from 'react-router-dom';
 
 dayjs.extend(CustomParseFormat);
 
-export default function PersonalInformationForm() {
+export default function PersonalInformationForm({ setIsEnrolled }) {
   const [dynamicInputIsLoading, setDynamicInputIsLoading] = useState(false);
   const { getCep } = useCep();
   const { enrollment } = useEnrollment();
@@ -98,6 +98,11 @@ export default function PersonalInformationForm() {
   function isValidCep(cep) {
     return cep.length === 8;
   }
+
+  const handleEnrollment = (evt) => {
+    evt.preventDefault();
+    setIsEnrolled(true);
+  };
 
   async function handleCepChanges(event) {
     const { name, value } = event.target;
@@ -249,7 +254,7 @@ export default function PersonalInformationForm() {
           </InputWrapper>
 
           <SubmitContainer>
-            <Button type="submit" disabled={dynamicInputIsLoading || saveEnrollmentLoading}>
+            <Button type="submit" disabled={dynamicInputIsLoading || saveEnrollmentLoading} onClick={(evt) => handleEnrollment(evt)}>
               Salvar
             </Button>
           </SubmitContainer>

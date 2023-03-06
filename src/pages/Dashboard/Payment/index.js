@@ -1,18 +1,30 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useState } from 'react';
-//import { FaBlackTie } from 'react-icons/fa';
-import PaymentCard from '../../../components/Dashboard/Payment';
 import Reservation from '../../../components/Dashboard/Reservation';
+import ErrorMsg from '../../../components/Dashboard/Payment/notEnrolled';
+import useEnrollment from '../../../hooks/api/useEnrollment';
 
 export default function Payment() {
   const [isReserved, setIsReserved] = useState(false);
+  const { enrollment } = useEnrollment();
+
+  if(!enrollment) {
+    return (
+      <>
+        <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
+        <Container>
+          <ErrorMsg/> 
+        </Container>
+      </>
+    );
+  }
 
   return (
     <>
       <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
       <Container>
-        {isReserved === false ? <Reservation setIsReserved={setIsReserved} /> : <PaymentCard />}
+        {isReserved === false ? <Reservation setIsReserved={setIsReserved} /> : <> </>}
       </Container>
     </>
   );
