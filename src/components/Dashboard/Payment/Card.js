@@ -58,8 +58,7 @@ export default function Card({ setIsPayed, userData }) {
     };
 
     try {
-      const response = await payWithCard(ticketId, cardData, token);
-      console.log(response);
+      await payWithCard(ticketId, cardData, token);
 
       toast('pagamento realizado com sucesso!');
     } catch (error) {
