@@ -40,7 +40,7 @@ export default function Card({ setIsPayed, userData }) {
   const handleSubmit = async(evt) => {
     evt.preventDefault();
 
-    const ticketId = 241;
+    const ticketId = 242;
 
     const { token } = userData;
     const { number, name, expiry, cvc, issuer } = card;
@@ -58,8 +58,7 @@ export default function Card({ setIsPayed, userData }) {
     };
 
     try {
-      const response = await payWithCard(ticketId, cardData, token);
-      console.log(response);
+      await payWithCard(ticketId, cardData, token);
 
       toast('pagamento realizado com sucesso!');
     } catch (error) {

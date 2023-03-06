@@ -1,11 +1,9 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Reservation from '../../../components/Dashboard/Reservation';
 import ErrorMsg from '../../../components/Dashboard/Payment/notEnrolled';
 import useEnrollment from '../../../hooks/api/useEnrollment';
-import Card from '../../../components/Dashboard/Payment/Card';
-import UserContext from '../../../contexts/UserContext';
 import PaymentCard from '../../../components/Dashboard/Payment';
 
 export default function Payment() {
@@ -16,9 +14,7 @@ export default function Payment() {
     return (
       <>
         <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
-        <Container>
-          <ErrorMsg />
-        </Container>
+        <ErrorMsg />
       </>
     );
   }
@@ -27,7 +23,7 @@ export default function Payment() {
     <>
       <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
       <Container>
-        {isReserved === false ? <Reservation setIsReserved={setIsReserved} /> : <PaymentCard/>}
+        {isReserved === false ? <Reservation setIsReserved={setIsReserved} /> : <PaymentCard />}
       </Container>
     </>
   );
@@ -35,8 +31,7 @@ export default function Payment() {
 
 export const Container = styled.div`
   width: 100%;
-  /* height: 100%;
-  min-height: 100vh; */
+  display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   > div {

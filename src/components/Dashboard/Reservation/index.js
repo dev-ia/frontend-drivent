@@ -11,7 +11,7 @@ export default function Reservation({ setIsReserved }) {
   const [isEnableDisplayThirdSection, setIsEnableDisplayThirdSection] = useState(false);
   //let buttonClickedFirstSection = -1;
 
-  const [isReservation, setIsReservation] = useState(false);
+  const [setIsReservation] = useState(false);
   const { ticketType } = useTicketType();
   const [ticketTypeObject, setTicketTypeObject] = useState({
     name: '',
@@ -177,7 +177,7 @@ export const SelectionButton = styled.button`
 export const ReserveButton = styled.button`
   position: relative;
   all: unset;
-  width: 162px;
+  width: 170px;
   height: 37px;
   background-color: #e0e0e0;
   box-shadow: 0px 2px 10px 0px #00000040;
@@ -185,7 +185,7 @@ export const ReserveButton = styled.button`
   align-items: center;
   text-align: center;
   cursor: pointer;
-  /* margin-bottom: 97px; */
+  margin-bottom: 97px;
 `;
 export const GreyFont = styled(Typography)`
   font-family: 'Roboto';
@@ -213,7 +213,7 @@ export const ButtonFont = styled.span`
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 16px;
   text-align: center;
   color: #000000;
