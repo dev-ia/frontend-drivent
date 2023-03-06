@@ -24,7 +24,7 @@ export const ValidationFont = styled.span`
 export const ValidationContainer = styled.div`
   display: flex;
   width: 100%;
-  height: calc(100% - 80px);
+  height: 100%;
   flex-wrap: wrap;
   word-wrap:normal;
   justify-content:center;
