@@ -7,7 +7,7 @@ import { createTicket } from '../../../services/ticketApi';
 import { createTicketType } from '../../../services/ticketTypeApi';
 import { toast } from 'react-toastify';
 
-export default function Payment() {
+export default function Reservation() {
   const [clickedButtonFirstSection, setClickedButtonFirstSection] = useState(-1);
   const [clickedButtonSecondSection, setClickedButtonSecondSection] = useState(-1);
   const [isEnableDisplaySecondSection, setIsEnableDisplaySecondSection] = useState(false);
@@ -21,7 +21,7 @@ export default function Payment() {
     presencial: 350,
   };
 
-  useEffect(async() => {
+  useEffect(() => {
     async function fetchData() {
       try {
         let arrayTicketTypesRequest = await getTickets(token);
@@ -79,7 +79,6 @@ export default function Payment() {
   function reserveTicket() {
     const bodyTicket = {
       ticketTypeId: ticketTypesArray[clickedButtonFirstSection].id,
-      enrollmentId: 1, //passar por props
       status: 0, //RESERVED
     };
 
@@ -94,9 +93,14 @@ export default function Payment() {
       // const navigate = useNavigate();
       // navigate('/');
     }
-
+    
     createTicketInDB();
   }
+
+  // const handleSubmit = (evt) => {
+  //   evt.preventDefault();
+  //   setIsReserved(true);
+  // };
 
   return (
     <>
