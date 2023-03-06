@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
 import 'react-credit-cards/es/styles-compiled.css';
-import { ButtonFont } from '../Reservation';
+import { ButtonFont } from '../Reservation/index';
 import { payWithCard } from '../../../services/paymentApi';
 
 export default function Card({ setIsPayed, userData }) {
