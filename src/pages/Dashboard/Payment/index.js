@@ -1,20 +1,23 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Reservation from '../../../components/Dashboard/Reservation';
 import ErrorMsg from '../../../components/Dashboard/Payment/notEnrolled';
 import useEnrollment from '../../../hooks/api/useEnrollment';
+import Card from '../../../components/Dashboard/Payment/Card';
+import UserContext from '../../../contexts/UserContext';
+import PaymentCard from '../../../components/Dashboard/Payment';
 
 export default function Payment() {
   const [isReserved, setIsReserved] = useState(false);
   const { enrollment } = useEnrollment();
 
-  if(!enrollment) {
+  if (!enrollment) {
     return (
       <>
         <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
         <Container>
-          <ErrorMsg/> 
+          <ErrorMsg />
         </Container>
       </>
     );
@@ -24,7 +27,7 @@ export default function Payment() {
     <>
       <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
       <Container>
-        {isReserved === false ? <Reservation setIsReserved={setIsReserved} /> : <> </>}
+        {isReserved === false ? <Reservation setIsReserved={setIsReserved} /> : <PaymentCard/>}
       </Container>
     </>
   );
