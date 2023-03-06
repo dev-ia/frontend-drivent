@@ -35,7 +35,10 @@ export const Container = styled.div`
   /* height: 100%;
   min-height: 100vh; */
   flex-wrap: wrap;
+  justify-content:center;
+  align-items: center;
   flex-direction: column;
+  gap:4px;
   > div {
     width: calc(50% - 20px);
     margin: 0 10px 0 0;

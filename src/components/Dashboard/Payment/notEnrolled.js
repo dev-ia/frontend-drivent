@@ -23,20 +23,11 @@ export const ValidationFont = styled.span`
 
 export const ValidationContainer = styled.div`
   display: flex;
-  width: 100%;
-  height: calc(100% - 80px);
   flex-wrap: wrap;
   word-wrap:normal;
-  justify-content:center;
-  flex-direction: column;
-  align-items: center;
   gap:4px;
-  > span {
-    width: 500px;
-  }
   @media (max-width: 600px) {
     > span {
-      width: 100%;
       padding: 20px !important;
     }
   }
