@@ -23,6 +23,8 @@ export const ValidationFont = styled.span`
 
 export const ValidationContainer = styled.div`
   display: flex;
+  width: 100%;
+  height: 100%;
   flex-wrap: wrap;
   word-wrap:normal;
   gap:4px;
