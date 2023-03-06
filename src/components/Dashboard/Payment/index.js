@@ -3,25 +3,65 @@ import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Card from './Card';
 import Confirmation from './Confirmation';
-import { GreyFont, PriceFont } from '../Reservation';
+import { GreyFont, PriceFont } from '../Reservation/index';
 import UserContext from '../../../contexts/UserContext';
+import { useEffect } from 'react';
+import { getTickets } from '../../../services/ticketApi';
 
 export default function PaymentCard() {
   const [isPayed, setIsPayed] = useState(false);
+  const [ticketInfo, setTicketInfo] = useState({});
+
   const { userData } = useContext(UserContext);
-  
+  const { token } = userData;
+
+  console.log(ticketInfo);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        let { TicketType } = await getTickets(token);
+        console.log(TicketType);
+        if (TicketType.isRemote) {
+          setTicketInfo(TicketType);
+        } else {
+          if (TicketType.includesHotel) {
+            const newTicket = {
+              name: 'Presencial + Com Hotel',
+              price: TicketType.price
+            };
+            setTicketInfo(newTicket);
+          } else {
+            const newTicket = {
+              name: 'Presencial + Sem Hotel',
+              price: TicketType.price
+            };
+            setTicketInfo(newTicket);
+          }
+        }
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
-      <Subtitle>Ingresso Escolhido</Subtitle>
-      <SelectedTicket>
-        <GreyFont>Presencial + Com Hotel</GreyFont>
-        <PriceFont>R$ 600</PriceFont>
-      </SelectedTicket>
-      <Subtitle>Pagamento</Subtitle>
-      {isPayed === false ?
-        <Card setIsPayed={setIsPayed} userData={userData} />
-        :
-        <Confirmation />}
+      {ticketInfo === undefined ? <></> :
+        <>
+          <Subtitle>Ingresso Escolhido</Subtitle>
+          <SelectedTicket>
+            <GreyFont>{ticketInfo.name}</GreyFont>
+            <PriceFont>R$ {ticketInfo.price}</PriceFont>
+          </SelectedTicket>
+          <Subtitle>Pagamento</Subtitle>
+          {isPayed === false ?
+            <Card setIsPayed={setIsPayed} userData={userData} />
+            :
+            <Confirmation />}
+        </>
+      }
     </>
   );
 }

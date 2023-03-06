@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useState } from 'react';
-import Reservation from '../../../components/Dashboard/Reservation';
 import ErrorMsg from '../../../components/Dashboard/Payment/notEnrolled';
 import useEnrollment from '../../../hooks/api/useEnrollment';
 import PaymentCard from '../../../components/Dashboard/Payment';
+import Reservation from '../../../components/Dashboard/Reservation';
 
 export default function Payment() {
   const [isReserved, setIsReserved] = useState(false);
