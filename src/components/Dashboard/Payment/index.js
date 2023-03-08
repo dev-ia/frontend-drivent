@@ -21,24 +21,7 @@ export default function PaymentCard() {
     async function fetchData() {
       try {
         let { TicketType } = await getTickets(token);
-        console.log(TicketType);
-        if (TicketType.isRemote) {
-          setTicketInfo(TicketType);
-        } else {
-          if (TicketType.includesHotel) {
-            const newTicket = {
-              name: 'Presencial + Com Hotel',
-              price: TicketType.price
-            };
-            setTicketInfo(newTicket);
-          } else {
-            const newTicket = {
-              name: 'Presencial + Sem Hotel',
-              price: TicketType.price
-            };
-            setTicketInfo(newTicket);
-          }
-        }
+        setTicketInfo(TicketType);
       } catch (err) {
         console.log(err.response.data);
       }
