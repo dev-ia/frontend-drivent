@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import Cards from 'react-credit-cards';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
@@ -6,11 +6,14 @@ import styled from 'styled-components';
 import 'react-credit-cards/es/styles-compiled.css';
 import { ButtonFont } from '../Reservation/index';
 import { payWithCard } from '../../../services/paymentApi';
-import useTicket from '../../../hooks/api/useTicket';
-import useToken from '../../../hooks/useToken';
+
 import { getTickets } from '../../../services/ticketApi';
+import UserContext from '../../../contexts/UserContext';
 
 export default function Card({ setIsPayed, userData }) {
+  const { token } = userData;
+  const [ticketId, setTickeId] = useState(0);
+
   const [card, setCard] = useState({
     number: '',
     name: '',
@@ -19,6 +22,19 @@ export default function Card({ setIsPayed, userData }) {
     issuer: '',
     focus: '',
   });
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const result = await getTickets(token);
+        console.log(result);
+        setTickeId(result.id);
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    }
+    fetchData();
+  }, []);
 
   const handleCallback = (evt) => {
     const { issuer } = evt;
@@ -43,9 +59,6 @@ export default function Card({ setIsPayed, userData }) {
   const handleSubmit = async(evt) => {
     evt.preventDefault();
 
-    const ticketId = 242;
-
-    const { token } = userData;
     const { number, name, expiry, cvc, issuer } = card;
 
     if (number === '' || name === '' || expiry === '' || cvc === '') {
