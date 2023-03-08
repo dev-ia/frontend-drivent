@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import RoomCard from './roomCard';
+import RoomButton from './roomButton';
 
 export default function Rooms() {
   const [isSelected, setIsSelected] = useState(false);
-  const [clickedRoom, setClickedRoom] = useState(-1);
 
   const rooms = [
     {
@@ -52,18 +51,24 @@ export default function Rooms() {
       capacity: 2
     },
   ];
+  const [selectedRoom, setSelectedRoom] = useState(null);
+
+  function handleRoomClick(evt, room) {
+    evt.preventDefault();
+    setSelectedRoom(room);
+  }
 
   return (
     <RoomsSection>
       {rooms.map((room) => {
         return (
-          <StyledRoomCard
+          <RoomButton
             key={room.id}
             isSelected={isSelected}
             setIsSelected={setIsSelected}
-            clickedRoom={clickedRoom}
-            setClickedRoom={setClickedRoom}
             room={room}
+            isActive={selectedRoom && selectedRoom.id === room.id}
+            onClick={(evt) => handleRoomClick(evt, room)}
           />
         );
       })}
@@ -74,8 +79,4 @@ export default function Rooms() {
 const RoomsSection = styled.div`
   display: flex;
   flex-wrap: wrap;
-`;
-
-const StyledRoomCard = styled(RoomCard)`
-  background-color: lightblue;
 `;

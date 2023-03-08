@@ -1,7 +1,7 @@
 import { Person, PersonOutline } from 'react-ionicons';
 
-export default function Icon({ isSelected }) {
-  if (isSelected) {
+export default function Icon({ isActive }) {
+  if (isActive) {
     return (
       <>
         <Person
@@ -12,7 +12,7 @@ export default function Icon({ isSelected }) {
   }
   return (
     <>
-      <Person/>
+      <PersonOutline/>
     </>
   );
 }
