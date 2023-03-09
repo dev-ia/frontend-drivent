@@ -19,6 +19,8 @@ const hotel = {
   WITH: 1,
 };
 
+//updating
+
 export default function Reservation({ setIsReserved }) {
   const [clickedButtonFirstSection, setClickedButtonFirstSection] = useState(-1);
   const [clickedButtonSecondSection, setClickedButtonSecondSection] = useState(-1);
@@ -138,7 +140,7 @@ export default function Reservation({ setIsReserved }) {
     createTicketInDB();
   }
 
-  const handleSubmit = async(evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
     setIsReserved(true);
   };
