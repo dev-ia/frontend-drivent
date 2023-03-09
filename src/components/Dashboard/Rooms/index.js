@@ -4,6 +4,7 @@ import RoomButton from './roomButton';
 
 export default function Rooms() {
   const [isSelected, setIsSelected] = useState(false);
+  const [clickedRoom, setClickedRoom] = useState(-1);
 
   const rooms = [
     {
@@ -66,6 +67,8 @@ export default function Rooms() {
             key={room.id}
             isSelected={isSelected}
             setIsSelected={setIsSelected}
+            clickedRoom={clickedRoom}
+            setClickedRoom={setClickedRoom}
             room={room}
             isActive={selectedRoom && selectedRoom.id === room.id}
             onClick={(evt) => handleRoomClick(evt, room)}

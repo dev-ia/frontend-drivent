@@ -187,7 +187,6 @@ export const Container = styled.div`
     width: 100%;
     margin: 0 10px 0 0;
   }
-
   @media (max-width: 600px) {
     > div {
       width: 100%;
@@ -214,7 +213,6 @@ export const PaymentWrapper = styled.div`
   align-items: center;
   gap: 24px;
   margin-top: 17px;
-
   @media (max-width: 700px) {
     width: 100%;
   }
