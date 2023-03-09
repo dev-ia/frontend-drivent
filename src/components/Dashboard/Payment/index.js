@@ -22,6 +22,8 @@ export default function PaymentCard() {
       try {
         let { TicketType } = await getTickets(token);
         setTicketInfo(TicketType);
+        console.log('TicketType Luis');
+        console.log(TicketType);
       } catch (err) {
         console.log(err.response.data);
       }
