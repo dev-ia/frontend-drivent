@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useState, useEffect } from 'react';
-import { getTickets, getTicketTypes } from '../../../services/ticketTypeApi';
+import { getTicketTypes } from '../../../services/ticketTypeApi';
 import useToken from '../../../hooks/useToken';
 import { createTicket } from '../../../services/ticketApi';
-import { createTicketType } from '../../../services/ticketTypeApi';
 import { toast } from 'react-toastify';
-import useTicket from '../../../hooks/api/useTicket';
 
 const card = {
   ONLINE: 0,
@@ -18,8 +16,6 @@ const hotel = {
   WITHOUT: 0,
   WITH: 1,
 };
-
-//updating
 
 export default function Reservation({ setIsReserved }) {
   const [clickedButtonFirstSection, setClickedButtonFirstSection] = useState(-1);
@@ -82,26 +78,6 @@ export default function Reservation({ setIsReserved }) {
       : setTotalValue(ticketPriceWithHotel);
   };
 
-  // function arrayOfButtonsTicketType() {
-  //   let arrayButtons = [];
-
-  //   for (let i = 0; i < ticketTypesArray.length; i++) {
-  //     arrayButtons.push(
-  //       <SelectionButton
-  //         key={i}
-  //         type="submit"
-  //         onClick={() => changeButtonFirstSection(i)}
-  //         className={clickedButtonFirstSection === i ? 'clicked' : 'notClicked'}
-  //       >
-  //         <GreyFont>{ticketTypesArray[i].name}</GreyFont>
-  //         <PriceFont>{ticketTypesArray[i].price}</PriceFont>
-  //       </SelectionButton>
-  //     );
-  //   }
-
-  //   return arrayButtons;
-  // }
-
   function getTicketId(isRemote, isHotelInclude) {
     const dbPosition = {
       ONLINE: 0,
@@ -140,7 +116,7 @@ export default function Reservation({ setIsReserved }) {
     createTicketInDB();
   }
 
-  const handleSubmit = async (evt) => {
+  const handleSubmit = async(evt) => {
     evt.preventDefault();
     setIsReserved(true);
   };
@@ -150,7 +126,6 @@ export default function Reservation({ setIsReserved }) {
       <Container>
         <Row isDisplay={true}>
           <Subtitle> Primeiro, escolha sua modalidade de ingresso </Subtitle>
-          {/* <PaymentWrapper>{arrayOfButtonsTicketType()}</PaymentWrapper> */}
           <PaymentWrapper>
             <SelectionButton
               type="submit"
