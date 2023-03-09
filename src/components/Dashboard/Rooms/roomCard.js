@@ -1,24 +1,34 @@
 import styled from 'styled-components';
-import { HiOutlineUser } from 'react-icons/hi';
-import { HiUser } from 'react-icons/hi';
-import Icon from './icons';
+import IconsList from './iconsList';
 import { useState } from 'react';
 
-export default function RoomCard() {
-  const [isFilled, setIsFilled] = useState(false);
+export default function RoomCard({ isSelected, setIsSelected, clickedRoom, setClickedRoom, room }) {
+  const { id, capacity } = room;
+  const [isFull, setIsFull] = useState(false);
+
+  const handleSelection = (evt) => {
+    evt.preventDefault();
+    setIsSelected(!isSelected);
+    setClickedRoom(id);
+  };
 
   return (
-    <RoomContainer isFilled={isFilled} disabled={isFilled} >
-      101
+    <RoomContainer
+      className={clickedRoom === id ? 'clicked' : 'not-clicked'}
+      isFull={isFull}
+      disabled={isFull}
+      isSelected={isSelected}
+      onClick={handleSelection}
+    >
+      <p>{id}</p>
       <IconsContainer>
-        <Icon setIsFilled={setIsFilled} />
+        <IconsList setIsFull={setIsFull} isSelected={isSelected} capacity={capacity} />
       </IconsContainer>
     </RoomContainer>
   );
 }
 
 const RoomContainer = styled.button`
-  background-color: ${({ disabled }) => disabled ? '#CECECE' : 'white'};
   width: 190px;
   height: 45px;
   padding: 10px;
@@ -28,6 +38,13 @@ const RoomContainer = styled.button`
   justify-content: space-between;
   border: solid 1px lightgray;
   border-radius: 10px;
+  cursor: pointer;
+  >.clicked{
+    background-color: #FFEED2;
+  }
+  >.not-clicked{
+    background-color: white;
+  }
 `;
 
 const IconsContainer = styled.div`
