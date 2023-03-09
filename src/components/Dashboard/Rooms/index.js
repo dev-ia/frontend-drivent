@@ -3,9 +3,6 @@ import styled from 'styled-components';
 import RoomButton from './roomButton';
 
 export default function Rooms() {
-  const [isSelected, setIsSelected] = useState(false);
-  const [clickedRoom, setClickedRoom] = useState(-1);
-
   const rooms = [
     {
       id: 0,
@@ -65,10 +62,6 @@ export default function Rooms() {
         return (
           <RoomButton
             key={room.id}
-            isSelected={isSelected}
-            setIsSelected={setIsSelected}
-            clickedRoom={clickedRoom}
-            setClickedRoom={setClickedRoom}
             room={room}
             isActive={selectedRoom && selectedRoom.id === room.id}
             onClick={(evt) => handleRoomClick(evt, room)}
