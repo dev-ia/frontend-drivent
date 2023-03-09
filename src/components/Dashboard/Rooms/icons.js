@@ -1,14 +1,18 @@
-import styled from 'styled-components';
-import UserFilled from '../../../assets/SVGs/UserFilled.svg';
-import UserOutline from '../../../assets/SVGs/UserOutline.svg';
 import { Person, PersonOutline } from 'react-ionicons';
 
-export default function Icon({ setIsFilled }) {
+export default function Icon({ isSelected }) {
+  if (isSelected) {
+    return (
+      <>
+        <Person
+          color={'#FF4791'}
+        />
+      </>
+    );
+  }
   return (
     <>
-      <Person />
-      <PersonOutline />
-      <PersonOutline />
+      <Person/>
     </>
   );
 }
