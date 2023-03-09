@@ -2,14 +2,16 @@ import styled from 'styled-components';
 import IconsList from './iconsList';
 import { useState } from 'react';
 
-export default function RoomCard({ isSelected, setIsSelected, clickedRoom, setClickedRoom, room }) {
+export default function RoomCard({ isSelected, setIsSelected, room }) {
   const { id, capacity } = room;
   const [isFull, setIsFull] = useState(false);
+  const [clickedRoom, setClickedRoom] = useState(-1);
 
   const handleSelection = (evt) => {
     evt.preventDefault();
     setIsSelected(!isSelected);
     setClickedRoom(id);
+    console.log(room);
   };
 
   return (
