@@ -5,6 +5,7 @@ import ErrorMsg from '../../../components/Dashboard/Payment/notEnrolled';
 import useEnrollment from '../../../hooks/api/useEnrollment';
 import PaymentCard from '../../../components/Dashboard/Payment';
 import Reservation from '../../../components/Dashboard/Reservation';
+import { TicketProvider } from '../../../contexts/ticketContext';
 
 export default function Payment() {
   const [isReserved, setIsReserved] = useState(false);
@@ -23,7 +24,7 @@ export default function Payment() {
     <>
       <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
       <Container>
-        {isReserved === false ? <Reservation setIsReserved={setIsReserved} /> : <PaymentCard />}
+        <TicketProvider>{isReserved === false ? <Reservation setIsReserved={setIsReserved} /> : <PaymentCard />}</TicketProvider>
       </Container>
     </>
   );
