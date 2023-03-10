@@ -5,6 +5,8 @@ import { getTicketTypes } from '../../../services/ticketTypeApi';
 import useToken from '../../../hooks/useToken';
 import { createTicket } from '../../../services/ticketApi';
 import { toast } from 'react-toastify';
+import { useContext } from 'react';
+import TicketContext from '../../../contexts/ticketContext';
 
 const card = {
   ONLINE: 0,
@@ -25,11 +27,7 @@ export default function Reservation({ setIsReserved }) {
   const [ticketTypesArray, setTicketTypesArray] = useState([]);
   const [totalValue, setTotalValue] = useState(0);
   const token = useToken();
-
-  let hotelValue = {
-    remote: 0,
-    presencial: 350,
-  };
+  const { setTicketTypeIdContext } = useContext(TicketContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -78,47 +76,45 @@ export default function Reservation({ setIsReserved }) {
       : setTotalValue(ticketPriceWithHotel);
   };
 
-  function getTicketId(isRemote, isHotelInclude) {
+  function getTicketTypeId(isRemote, isHotelInclude) {
     const dbPosition = {
       ONLINE: 0,
       PRESENCIAL_WITHOUT_HOTEL: 1,
       PRESENCIAL_WITH_HOTEL: 2,
     };
 
-    if (!isRemote && isHotelInclude) {
+    if (isRemote && !isHotelInclude) {
       return ticketTypesArray[dbPosition.ONLINE].id;
     } else if (!isRemote && !isHotelInclude) {
       return ticketTypesArray[dbPosition.PRESENCIAL_WITHOUT_HOTEL].id;
-    } else {
+    } else{
       return ticketTypesArray[dbPosition.PRESENCIAL_WITH_HOTEL].id;
     }
   }
 
-  function reserveTicket() {
+  const reserveTicket = async() => {
     const isRemote = clickedButtonFirstSection === card.ONLINE ? true : false;
     const isHotelInclude = clickedButtonSecondSection === hotel.WITH ? true : false;
     const RESERVED = 0;
 
     const bodyTicket = {
-      ticketTypeId: getTicketId(isRemote, isHotelInclude),
+      ticketTypeId: getTicketTypeId(isRemote, isHotelInclude),
       status: RESERVED,
     };
 
     async function createTicketInDB() {
       try {
-        await createTicket(bodyTicket, token);
+        const ticketCreated = await createTicket(bodyTicket, token);
+
+        setTicketTypeIdContext(ticketCreated.id);
+        setIsReserved(true);
         return toast('ingresso reservado!');
       } catch (err) {
         console.log(err.data);
       }
     }
 
-    createTicketInDB();
-  }
-
-  const handleSubmit = async(evt) => {
-    evt.preventDefault();
-    setIsReserved(true);
+    await createTicketInDB();
   };
 
   return (
@@ -171,7 +167,7 @@ export default function Reservation({ setIsReserved }) {
         <Row isDisplay={isEnableDisplayThirdSection}>
           <Subtitle>Fechado! O total ficou em R$ {totalValue}. Agora é só confirmar:</Subtitle>
           <PaymentWrapper>
-            <ReserveButton type="submit" onClick={(evt) => handleSubmit(evt)}>
+            <ReserveButton>
               <ButtonFont onClick={() => reserveTicket()}>RESERVAR INGRESSO</ButtonFont>
             </ReserveButton>
           </PaymentWrapper>
