@@ -22,7 +22,6 @@ const Container = styled.div`
   min-height: 243px;
   display: grid;
   place-items: center;
-  max-width:60%;
   @media (max-width: 600px) {
     > span {
       padding: 20px !important;
