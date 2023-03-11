@@ -1,12 +1,23 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useState, useEffect } from 'react';
-import { getTickets, getTicketTypes } from '../../../services/ticketTypeApi';
+import { getTicketTypes } from '../../../services/ticketTypeApi';
 import useToken from '../../../hooks/useToken';
 import { createTicket } from '../../../services/ticketApi';
-import { createTicketType } from '../../../services/ticketTypeApi';
 import { toast } from 'react-toastify';
-import useTicket from '../../../hooks/api/useTicket';
+import { useContext } from 'react';
+import TicketContext from '../../../contexts/ticketContext';
+
+const card = {
+  ONLINE: 0,
+  PRESENCIAL: 1,
+  RESET: -1,
+};
+
+const hotel = {
+  WITHOUT: 0,
+  WITH: 1,
+};
 
 export default function Reservation({ setIsReserved }) {
   const [clickedButtonFirstSection, setClickedButtonFirstSection] = useState(-1);
@@ -16,11 +27,7 @@ export default function Reservation({ setIsReserved }) {
   const [ticketTypesArray, setTicketTypesArray] = useState([]);
   const [totalValue, setTotalValue] = useState(0);
   const token = useToken();
-
-  let hotelValue = {
-    remote: 0,
-    presencial: 350,
-  };
+  const { setTicketTypeIdContext } = useContext(TicketContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -35,72 +42,79 @@ export default function Reservation({ setIsReserved }) {
     fetchData();
   }, []);
 
+  function actionsOnlineButtonClicked() {
+    setTotalValue(ticketTypesArray[card.ONLINE].price);
+    setClickedButtonSecondSection(-1);
+    setIsEnableDisplaySecondSection(false);
+    setIsEnableDisplayThirdSection(true);
+  }
+
+  function actionsPresencialButtonClicked() {
+    setClickedButtonSecondSection(card.RESET);
+    setTotalValue(ticketTypesArray[card.PRESENCIAL].price); //online
+    setIsEnableDisplaySecondSection(true);
+    setIsEnableDisplayThirdSection(false);
+  }
+
   const changeButtonFirstSection = (buttonClickedFirstSection) => {
     setClickedButtonFirstSection(buttonClickedFirstSection);
-    if (buttonClickedFirstSection === 0) {
-      setTotalValue(ticketTypesArray[0].price);
-      setClickedButtonSecondSection(-1);
-      setIsEnableDisplaySecondSection(false);
-      setIsEnableDisplayThirdSection(true);
-    } else if (buttonClickedFirstSection === 1) {
-      setClickedButtonSecondSection(-1);
-      setTotalValue(ticketTypesArray[0].price); //online
-      setIsEnableDisplaySecondSection(true);
-      setIsEnableDisplayThirdSection(false);
+
+    if (buttonClickedFirstSection === card.ONLINE) {
+      actionsOnlineButtonClicked();
+    } else if (buttonClickedFirstSection === card.PRESENCIAL) {
+      actionsPresencialButtonClicked();
     }
   };
 
   const changeButtonSecondSection = (buttonClickedSecondSection) => {
     setClickedButtonSecondSection(buttonClickedSecondSection);
     setIsEnableDisplayThirdSection(true);
-    const ticketPrice = ticketTypesArray[clickedButtonFirstSection].price;
-    buttonClickedSecondSection === 0 ? setTotalValue(ticketPrice) : setTotalValue(ticketPrice + hotelValue.presencial);
+    const ticketPriceWithHotel = ticketTypesArray[card.PRESENCIAL]?.price;
+    const ticketPriceWithoutHotel = ticketTypesArray[2]?.price;
+    buttonClickedSecondSection === hotel.WITH
+      ? setTotalValue(ticketPriceWithoutHotel)
+      : setTotalValue(ticketPriceWithHotel);
   };
 
-  function arrayOfButtonsTicketType() {
-    let arrayButtons = [];
+  function getTicketTypeId(isRemote, isHotelInclude) {
+    const dbPosition = {
+      ONLINE: 0,
+      PRESENCIAL_WITHOUT_HOTEL: 1,
+      PRESENCIAL_WITH_HOTEL: 2,
+    };
 
-    for (let i = 0; i < ticketTypesArray.length; i++) {
-      arrayButtons.push(
-        <SelectionButton
-          key={i}
-          type="submit"
-          onClick={() => changeButtonFirstSection(i)}
-          className={clickedButtonFirstSection === i ? 'clicked' : 'notClicked'}
-        >
-          <GreyFont>{ticketTypesArray[i].name}</GreyFont>
-          <PriceFont>{ticketTypesArray[i].price}</PriceFont>
-        </SelectionButton>
-      );
+    if (isRemote && !isHotelInclude) {
+      return ticketTypesArray[dbPosition.ONLINE].id;
+    } else if (!isRemote && !isHotelInclude) {
+      return ticketTypesArray[dbPosition.PRESENCIAL_WITHOUT_HOTEL].id;
+    } else{
+      return ticketTypesArray[dbPosition.PRESENCIAL_WITH_HOTEL].id;
     }
-
-    return arrayButtons;
   }
 
-  function reserveTicket() {
+  const reserveTicket = async() => {
+    const isRemote = clickedButtonFirstSection === card.ONLINE ? true : false;
+    const isHotelInclude = clickedButtonSecondSection === hotel.WITH ? true : false;
+    const RESERVED = 0;
+
     const bodyTicket = {
-      ticketTypeId: ticketTypesArray[clickedButtonFirstSection].id,
-      status: 0, //RESERVED
+      ticketTypeId: getTicketTypeId(isRemote, isHotelInclude),
+      status: RESERVED,
     };
 
     async function createTicketInDB() {
       try {
-        //createTicketType(token, bodyTicketType);
-        await createTicket(bodyTicket, token);
+        const ticketCreated = await createTicket(bodyTicket, token);
+
+        setTicketTypeIdContext(ticketCreated.id);
+        setIsReserved(true);
         return toast('ingresso reservado!');
       } catch (err) {
         console.log(err.data);
       }
-      // const navigate = useNavigate();
-      // navigate('/');
     }
 
-    createTicketInDB();
-  }
-
-  const handleSubmit = async(evt) => {
-    evt.preventDefault();
-    setIsReserved(true);
+    await createTicketInDB();
   };
 
   return (
@@ -108,7 +122,25 @@ export default function Reservation({ setIsReserved }) {
       <Container>
         <Row isDisplay={true}>
           <Subtitle> Primeiro, escolha sua modalidade de ingresso </Subtitle>
-          <PaymentWrapper>{arrayOfButtonsTicketType()}</PaymentWrapper>
+          <PaymentWrapper>
+            <SelectionButton
+              type="submit"
+              onClick={() => changeButtonFirstSection(card.ONLINE)}
+              className={clickedButtonFirstSection === card.ONLINE ? 'clicked' : 'notClicked'}
+            >
+              <GreyFont>Online</GreyFont>
+              <PriceFont>{ticketTypesArray[0]?.price}</PriceFont>
+            </SelectionButton>
+
+            <SelectionButton
+              type="submit"
+              onClick={() => changeButtonFirstSection(card.PRESENCIAL)}
+              className={clickedButtonFirstSection === card.PRESENCIAL ? 'clicked' : 'notClicked'}
+            >
+              <GreyFont>Presencial</GreyFont>
+              <PriceFont>{ticketTypesArray[card.PRESENCIAL]?.price}</PriceFont>
+            </SelectionButton>
+          </PaymentWrapper>
         </Row>
 
         <Row isDisplay={isEnableDisplaySecondSection}>
@@ -116,16 +148,16 @@ export default function Reservation({ setIsReserved }) {
           <PaymentWrapper>
             <SelectionButton
               type="submit"
-              onClick={() => changeButtonSecondSection(0)}
-              className={clickedButtonSecondSection === 0 ? 'clicked' : 'notClicked'}
+              onClick={() => changeButtonSecondSection(hotel.WITHOUT)}
+              className={clickedButtonSecondSection === hotel.WITHOUT ? 'clicked' : 'notClicked'}
             >
               <GreyFont>Sem Hotel</GreyFont>
               <PriceFont>+ R$ 0</PriceFont>
             </SelectionButton>
             <SelectionButton
               type="submit"
-              onClick={() => changeButtonSecondSection(1)}
-              className={clickedButtonSecondSection === 1 ? 'clicked' : 'notClicked'}
+              onClick={() => changeButtonSecondSection(hotel.WITH)}
+              className={clickedButtonSecondSection === hotel.WITH ? 'clicked' : 'notClicked'}
             >
               <GreyFont>Com Hotel</GreyFont>
               <PriceFont>+ R$ 350</PriceFont>
@@ -135,7 +167,7 @@ export default function Reservation({ setIsReserved }) {
         <Row isDisplay={isEnableDisplayThirdSection}>
           <Subtitle>Fechado! O total ficou em R$ {totalValue}. Agora é só confirmar:</Subtitle>
           <PaymentWrapper>
-            <ReserveButton type="submit" onClick={(evt) => handleSubmit(evt)}>
+            <ReserveButton>
               <ButtonFont onClick={() => reserveTicket()}>RESERVAR INGRESSO</ButtonFont>
             </ReserveButton>
           </PaymentWrapper>
