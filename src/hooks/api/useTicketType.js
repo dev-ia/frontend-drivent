@@ -7,7 +7,7 @@ export default function useTicketType() {
     loading: ticketTypeLoading,
     error: ticketTypeError,
     act: ticketType
-  } = useAsync(ticketTypeApi.getTickets, false);
+  } = useAsync(ticketTypeApi.getTicketTypes, false);
 
   return {
     ticketTypeLoading,
