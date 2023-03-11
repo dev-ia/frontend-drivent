@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Cards from 'react-credit-cards';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
@@ -8,7 +8,6 @@ import { ButtonFont } from '../Reservation/index';
 import { payWithCard } from '../../../services/paymentApi';
 
 import { getTickets } from '../../../services/ticketApi';
-import UserContext from '../../../contexts/UserContext';
 
 export default function Card({ setIsPayed, userData }) {
   const { token } = userData;
@@ -27,7 +26,6 @@ export default function Card({ setIsPayed, userData }) {
     async function fetchData() {
       try {
         const result = await getTickets(token);
-        console.log(result);
         setTickeId(result.id);
       } catch (err) {
         console.log(err.response.data);

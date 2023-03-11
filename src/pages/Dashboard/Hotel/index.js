@@ -1,7 +1,5 @@
 import { Container, StyledTypography } from '../Payment';
 import NotPaid from '../../../components/Dashboard/Hotel/NotPaid';
-import DoesNotIncludeHotel from '../../../components/Dashboard/Hotel/DoesNotIncludeHotel';
-import HotelLayout from '../../../components/Dashboard/Hotel';
 import usePayment from '../../../hooks/api/usePayment';
 import useTicketType from '../../../hooks/api/useTicketType';
 import Rooms from '../../../components/Dashboard/Rooms';

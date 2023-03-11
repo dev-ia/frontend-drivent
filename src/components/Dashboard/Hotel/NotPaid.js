@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { ValidationFont, ValidationContainer } from '../Payment/notEnrolled';
 
 export default function NotPaid() {
