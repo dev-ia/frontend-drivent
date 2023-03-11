@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Person, PersonOutline } from 'react-ionicons';
 import styled from 'styled-components';
 
