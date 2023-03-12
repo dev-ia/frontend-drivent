@@ -3,8 +3,6 @@ import NotPaid from '../../../components/Dashboard/Hotel/NotPaid';
 import styled from 'styled-components';
 import DoesNotIncludeHotel from '../../../components/Dashboard/Hotel/DoesNotIncludeHotel';
 import HotelLayout from '../../../components/Dashboard/Hotel';
-import usePayment from '../../../hooks/api/usePayment';
-import useTicketType from '../../../hooks/api/useTicketType';
 import Rooms from '../../../components/Dashboard/Rooms';
 import { useContext, useEffect, useState } from 'react';
 import BookRoom from '../../../components/Dashboard/Rooms/BookRoom';
@@ -16,6 +14,7 @@ export default function Hotel() {
   const [ticketType, setTicketType] = useState({});
   const [isPayed, setIsPayed] = useState(false);
   const [roomId, setRoomId] = useState(null);
+  const [bookingId, setBookingId] = useState(null);
 
   useEffect(() => {
     const { token } = userData;
@@ -45,14 +44,14 @@ export default function Hotel() {
   if (ticketType) {
     return (
       <>
-        <StyledTypography variant="h4"> Escolha de hotel e quarto </StyledTypography>
+        {/* <StyledTypography variant="h4"> Escolha de hotel e quarto </StyledTypography>
         <LayoutWrapper>
           <HotelLayout>
             {ticketType.isRemote == true ? <DoesNotIncludeHotel /> : <>OUTRO</>}
           </HotelLayout>
-        </LayoutWrapper>
+        </LayoutWrapper> */}
         <Rooms setRoomId={setRoomId} />
-        {roomId === null ? '' : <BookRoom roomId={roomId} />}
+        {roomId === null ? '' : <BookRoom roomId={roomId} bookingId={bookingId} setBookingId={setBookingId} />}
       </>
     );
   };
