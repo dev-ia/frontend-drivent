@@ -18,6 +18,9 @@ export const ValidationFont = styled.span`
   line-height: 23px;
   text-align: center;
   color: #8E8E8E;
+  min-height: 243px;
+  display: grid;
+  place-items: center;
 
 `;
 
