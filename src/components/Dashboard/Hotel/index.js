@@ -1,114 +1,74 @@
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { getHotels } from '../../../services/hotelApi';
-import { Container, Subtitle } from '../Reservation';
-import { HotelCard } from './HotelCard';
+import { Subtitle } from '../Reservation';
 import useToken from '../../../hooks/useToken';
+import useHotel from '../../../hooks/api/useHotel';
+import HotelInfo from './HotelInfo';
 
 export default function HotelLayout() {
-  const [clickedButtonFirstSection, setClickedButtonFirstSection] = useState(-1);
-  const [hotelsArray, setHotelsArray] = useState([]);
   const token = useToken();
+  const hotels = useHotel(token).hotel;
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        let arrayOfHotelsRequest = await getHotels(token);
+  if(hotels) {
+    return (
+      <>
+        <Subtitle>Primeiro, escolha seu hotel</Subtitle>
+        <HotelContainer>
+          {hotels.map((hotel) => {
+            return (
+              <BiggerContainer>
+                <HotelCard>
+                  <figure >
+                    <img className="hotelPhoto" src={hotel.image} alt={hotel.name} ></img>
+                  </figure>
+                </HotelCard>
+                <HotelInfo id = {hotel.id} token = {token}></HotelInfo>
+              </BiggerContainer>
 
-        setHotelsArray(arrayOfHotelsRequest);
-      } catch (err) {
-        console.log(err.response.data);
-      }
-    }
-    fetchData();
-  }, []);
-
-  function arrayOfHotels() {
-    let arrayHotels = [];
-
-    for (let i = 0; i < hotelsArray.length; i++) {
-      arrayHotels.push(
-        <HotelCard
-          key={i}
-          type="submit"
-
-          className={clickedButtonFirstSection === i ? 'clicked' : 'notClicked'}
-        >
-          <HotelFont>{hotelsArray[i].name}</HotelFont>
-          <SubtitleFont>Tipos de acomodação:</SubtitleFont>
-          <InfoFont> Single e Double </InfoFont>
-          <SubtitleFont>Vagas disponíveis:</SubtitleFont>
-          <InfoFont> 25 </InfoFont>
-          
-        </HotelCard>
-      );
-    }
-
-    return arrayHotels;
+            );
+          })
+          }
+        </HotelContainer>
+      </>
+    );
   }
 
   return (
     <>
-      <Container>
-        <HotelRow>
-          <Subtitle> Primeiro, escolha seu hotel</Subtitle>
-          <HotelWrapper>{arrayOfHotels()} </HotelWrapper>
-        </HotelRow>
-      </Container>
-    </>
-  );
-}
+      <Subtitle>Carregando hotéis </Subtitle>
+    </>);
+};
 
-export const HotelRow = styled.div`
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-`;
-
-export const HotelWrapper = styled.div`
+const HotelContainer = styled.div`
   display: flex;
+  flex-direction: row;
   width: 100%;
   flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
-  gap: 24px;
-  margin-top: 18px;
+`;
 
-  @media (max-width: 700px) {
-    width: 100%;
+const BiggerContainer = styled.div`
+  width: 196px;
+  height: 264px;
+  background-color: #E5E5E5;
+  border-radius: 8px;
+  margin-right: 20px;
+  padding-left: 15px;
+  padding-top: 15px;
+  padding-right: 15px;
+  margin-bottom: 15px;
+`;
+
+const HotelCard = styled.div`
+  width: 168px;
+  height: 109px;
+  background-color: #E5E5E5;
+  margin-right: 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  img {
+    width: 166px;
+    height: 107px;
+    overflow: hidden;
+    border-radius: 5px;
   }
-`;
-
-export const HotelFont = styled.span`
-font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-size: 20px;
-line-height: 23px;
-text-align: left;
-letter-spacing: 0em;
-margin-bottom: 10px!important;
-color: #343434;
-`;
-
-export const SubtitleFont = styled.span`
-font-family: Roboto;
-font-size: 12px;
-font-weight: 700;
-line-height: 14px;
-letter-spacing: 0em;
-text-align: left;
-margin-bottom: 2px!important;
-color: #3C3C3C;
-`;
-
-export const InfoFont = styled.span`
-font-family: Roboto;
-font-size: 12px;
-font-weight: 400;
-line-height: 14px;
-letter-spacing: 0em;
-text-align: left;
-color: #3C3C3C;
-margin-top:14px!important;
 `;
