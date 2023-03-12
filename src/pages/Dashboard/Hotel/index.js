@@ -5,12 +5,14 @@ import DoesNotIncludeHotel from '../../../components/Dashboard/Hotel/DoesNotIncl
 import HotelLayout from '../../../components/Dashboard/Hotel';
 import usePayment from '../../../hooks/api/usePayment';
 import useTicket from '../../../hooks/api/useTicket';
+import useTicketType from '../../../hooks/api/useTicketType';
+import Rooms from '../../../components/Dashboard/Rooms';
 
 export default function Hotel() {
   const { payment } = usePayment();
   const { ticket } = useTicket();
 
-  if (!payment) {
+  if (payment) {
     return (
       <>
         <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
@@ -27,8 +29,9 @@ export default function Hotel() {
       <StyledTypography variant="h4"> Escolha de hotel e quarto </StyledTypography>
       <LayoutWrapper> 
         <HotelLayout/>
-        {/* {(!ticket.TicketType.includesHotel) ? <DoesNotIncludeHotel /> : < HotelLayout/>} */}
+        { /* {ticketType.isRemote === true ? <DoesNotIncludeHotel /> : < HotelLayout/>} */}
       </LayoutWrapper>
+      <Rooms/>
     </>
   );
 }
