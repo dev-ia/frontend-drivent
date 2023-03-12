@@ -34,7 +34,9 @@ export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  justify-content:center;
   flex-direction: column;
+  gap:4px;
   > div {
     width: calc(50% - 20px);
     margin: 0 10px 0 0;
