@@ -4,9 +4,10 @@ import useToken from '../../../hooks/useToken';
 import { getRoomsWithHotelId } from '../../../services/hotelApi';
 import RoomButton from './roomButton';
 
-export default function Rooms({ hotelId }) {
+export default function Rooms({ hotelId, setRoomId }) {
   const token = useToken();
   const [rooms, setRooms] = useState([]);
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   useEffect(() => {
     hotelId = 276;
@@ -21,11 +22,10 @@ export default function Rooms({ hotelId }) {
     getsRooms();
   }, []);
 
-  const [selectedRoom, setSelectedRoom] = useState(null);
-
-  function handleRoomClick(evt, room) {
+  function handleRoomSelection(evt, room) {
     evt.preventDefault();
     setSelectedRoom(room);
+    setRoomId(room.id);
   }
 
   return (
@@ -37,7 +37,7 @@ export default function Rooms({ hotelId }) {
             room={room}
             number={index + 101}
             isActive={selectedRoom && selectedRoom.id === room.id}
-            onClick={(evt) => handleRoomClick(evt, room)}
+            onClick={(evt) => handleRoomSelection(evt, room)}
           />
         );
       })}
