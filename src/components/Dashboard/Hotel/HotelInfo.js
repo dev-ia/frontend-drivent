@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useRooms from '../../../hooks/api/useRooms';
+import useHotel from '../../../hooks/api/useHotel';
 
 export default function HotelInfo(props) {
   const { id, token } = props;
   console.log(token);
-
   let [capacity, setCapacity] = useState(0);
   const room =  useRooms(token, id).rooms;
   let count=0;
@@ -22,15 +22,11 @@ export default function HotelInfo(props) {
   if(room) {
     return (
       <>
-        <HotelFont>{room.name}</HotelFont>
-        <SubtitleFont>Tipos de Acomodação:</SubtitleFont>
-        <InfoFont>
-          345
-        </InfoFont>
-        <SubtitleFont>Vagas Disponíveis:</SubtitleFont>
-        <InfoFont>
-        2
-        </InfoFont>
+        <HotelFont> Hotel </HotelFont>
+        <SubtitleFont>Tipos de Acomodação:<br/></SubtitleFont>
+        <InfoFont> Single, Double e Triple <br/></InfoFont>
+        <SubtitleFont>Vagas Disponíveis:<br/></SubtitleFont>
+        <InfoFont> {capacity} </InfoFont>
       </>
     );
   }
