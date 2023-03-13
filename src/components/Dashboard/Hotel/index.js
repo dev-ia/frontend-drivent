@@ -7,7 +7,7 @@ import HotelInfo from './HotelInfo';
 export default function HotelLayout() {
   const token = useToken();
   const hotels = useHotel(token).hotel;
-
+  console.log(hotels);
   if(hotels) {
     return (
       <>
