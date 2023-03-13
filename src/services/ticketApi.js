@@ -21,14 +21,10 @@ export async function getTickets(token) {
 }
 
 export async function getTicketsById(token, ticketId) {
-  console.log('dentro da services > ticketApi > getTicketsById, o ticketId parametro é');
-  console.log(ticketId);
   const response = await api.get(`/tickets/${ticketId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log('response.data');
-  console.log(response.data);
   return response.data;
 }

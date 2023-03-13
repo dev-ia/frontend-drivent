@@ -5,7 +5,6 @@ import useHotel from '../../../hooks/api/useHotel';
 
 export default function HotelInfo(props) {
   const { id, token } = props;
-  console.log(token);
   let [capacity, setCapacity] = useState(0);
   const room =  useRooms(token, id).rooms;
   let count=0;
