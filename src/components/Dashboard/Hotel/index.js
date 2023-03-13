@@ -4,24 +4,30 @@ import useToken from '../../../hooks/useToken';
 import useHotel from '../../../hooks/api/useHotel';
 import HotelInfo from './HotelInfo';
 
-export default function HotelLayout() {
+export default function HotelLayout({ setHotelId }) {
   const token = useToken();
   const hotels = useHotel(token).hotel;
   console.log(hotels);
-  if(hotels) {
+
+  function handleChooseHotel(evt, hotelId) {
+    evt.preventDefault();
+    setHotelId(hotelId);
+  }
+  
+  if (hotels) {
     return (
       <>
         <Subtitle>Primeiro, escolha seu hotel</Subtitle>
         <HotelContainer>
           {hotels.map((hotel) => {
             return (
-              <BiggerContainer>
+              <BiggerContainer onClick={(evt) => handleChooseHotel(evt, hotel.id)}>
                 <HotelCard>
                   <figure >
                     <img className="hotelPhoto" src={hotel.image} alt={hotel.name} ></img>
                   </figure>
                 </HotelCard>
-                <HotelInfo id = {hotel.id} token = {token}></HotelInfo>
+                <HotelInfo id={hotel.id} token={token} ></HotelInfo>
               </BiggerContainer>
 
             );

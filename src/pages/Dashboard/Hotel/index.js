@@ -15,6 +15,7 @@ export default function Hotel() {
   const [isPayed, setIsPayed] = useState(false);
   const [roomId, setRoomId] = useState(null);
   const [bookingId, setBookingId] = useState(null);
+  const [hotelId, setHotelId] = useState(null);
 
   useEffect(() => {
     const { token } = userData;
@@ -44,14 +45,12 @@ export default function Hotel() {
   if (ticketType) {
     return (
       <>
-        {/* <StyledTypography variant="h4"> Escolha de hotel e quarto </StyledTypography>
+        <StyledTypography variant="h4"> Escolha de hotel e quarto </StyledTypography>
         <LayoutWrapper>
-          <HotelLayout>
-            {ticketType.isRemote == true ? <DoesNotIncludeHotel /> : <>OUTRO</>}
-          </HotelLayout>
-        </LayoutWrapper> */}
-        <Rooms setRoomId={setRoomId} />
-        {roomId === null ? '' : <BookRoom roomId={roomId} bookingId={bookingId} setBookingId={setBookingId} />}
+          {ticketType.isRemote == true ? <DoesNotIncludeHotel /> : <HotelLayout setHotelId={setHotelId} />}
+        </LayoutWrapper>
+        {hotelId === null ? '' : <Rooms setRoomId={setRoomId}  hotelId={hotelId} />}
+        {roomId === null ? '' : <BookRoom roomId={roomId} bookingId={bookingId} setBookingId={setBookingId}/>}
       </>
     );
   };
