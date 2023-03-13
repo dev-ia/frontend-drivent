@@ -3,15 +3,17 @@ import { Subtitle } from '../Reservation';
 import useToken from '../../../hooks/useToken';
 import useHotel from '../../../hooks/api/useHotel';
 import HotelInfo from './HotelInfo';
+import { useState } from 'react';
 
 export default function HotelLayout({ setHotelId }) {
   const token = useToken();
   const hotels = useHotel(token).hotel;
-  console.log(hotels);
+  const [selectedHotel, setSelectedHotel] = useState(null);
 
   function handleChooseHotel(evt, hotelId) {
     evt.preventDefault();
     setHotelId(hotelId);
+    setSelectedHotel(hotelId);
   }
   
   if (hotels) {
@@ -21,7 +23,7 @@ export default function HotelLayout({ setHotelId }) {
         <HotelContainer>
           {hotels.map((hotel) => {
             return (
-              <BiggerContainer onClick={(evt) => handleChooseHotel(evt, hotel.id)}>
+              <BiggerContainer isActive={selectedHotel === hotel.id} onClick={(evt) => handleChooseHotel(evt, hotel.id)}>
                 <HotelCard>
                   <figure >
                     <img className="hotelPhoto" src={hotel.image} alt={hotel.name} ></img>
@@ -49,12 +51,13 @@ const HotelContainer = styled.div`
   flex-direction: row;
   width: 100%;
   flex-wrap: wrap;
+  margin-top:18px;
 `;
 
 const BiggerContainer = styled.div`
   width: 196px;
   height: 264px;
-  background-color: #E5E5E5;
+  background-color: ${({ isActive }) => isActive ? '#FFEED2' : '#EBEBEB'};
   border-radius: 8px;
   margin-right: 20px;
   padding-left: 15px;
@@ -66,9 +69,7 @@ const BiggerContainer = styled.div`
 const HotelCard = styled.div`
   width: 168px;
   height: 109px;
-  background-color: #E5E5E5;
   margin-right: 20px;
-  border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 10px;
   img {

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useToken from '../../../hooks/useToken';
 import { getRoomsWithHotelId } from '../../../services/hotelApi';
+import { Subtitle } from '../Reservation';
 import RoomButton from './roomButton';
 
 export default function Rooms({ hotelId, setRoomId }) {
@@ -28,19 +29,22 @@ export default function Rooms({ hotelId, setRoomId }) {
   }
 
   return (
-    <RoomsSection>
-      {rooms.map((room, index) => {
-        return (
-          <RoomButton
-            key={room.id}
-            room={room}
-            number={index + 101}
-            isActive={selectedRoom && selectedRoom.id === room.id}
-            onClick={(evt) => handleRoomSelection(evt, room)}
-          />
-        );
-      })}
-    </RoomsSection>
+    <>
+      <Subtitle> Ótima pedida! Agora escolha seu quarto: </Subtitle>
+      <RoomsSection>
+        {rooms.map((room, index) => {
+          return (
+            <RoomButton
+              key={room.id}
+              room={room}
+              number={index + 101}
+              isActive={selectedRoom && selectedRoom.id === room.id}
+              onClick={(evt) => handleRoomSelection(evt, room)}
+            />
+          );
+        })}
+      </RoomsSection>
+    </>
   );
 }
 
