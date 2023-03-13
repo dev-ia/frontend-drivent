@@ -10,17 +10,16 @@ export default function Rooms({ hotelId, setRoomId }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
 
   useEffect(() => {
-    hotelId = 276;
     async function getsRooms() {
       try {
-        const { Rooms } = await getRoomsWithHotelId(hotelId, token);
+        const { Rooms } = await getRoomsWithHotelId(token, hotelId);
         setRooms(Rooms);
       } catch (error) {
         console.log(error.response.data);
       };
     }
     getsRooms();
-  }, []);
+  }, [hotelId]);
 
   function handleRoomSelection(evt, room) {
     evt.preventDefault();

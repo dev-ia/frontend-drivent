@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import useRooms from '../../../hooks/api/useRooms';
 
 export default function HotelInfo(props) {
-  const { id, user } = props;
+  const { id, token } = props;
+  console.log(token);
+
   let [capacity, setCapacity] = useState(0);
-  const room =  useRooms(user, id).rooms;
+  const room =  useRooms(token, id).rooms;
   let count=0;
   
   if(room) {
