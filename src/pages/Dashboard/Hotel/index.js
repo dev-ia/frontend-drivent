@@ -8,6 +8,10 @@ import { useContext, useEffect, useState } from 'react';
 import BookRoom from '../../../components/Dashboard/Rooms/BookRoom';
 import UserContext from '../../../contexts/UserContext';
 import { getTickets } from '../../../services/ticketApi';
+import { getBooking } from '../../../services/bookingApi';
+import useToken from '../../../hooks/useToken';
+import BookResume from '../../../components/Dashboard/Rooms/BookResume';
+import axios from 'axios';
 
 export default function Hotel() {
   const { userData } = useContext(UserContext);
@@ -16,6 +20,25 @@ export default function Hotel() {
   const [roomId, setRoomId] = useState(null);
   const [bookingId, setBookingId] = useState(null);
   const [hotelId, setHotelId] = useState(null);
+  const [showResume, setShowResume] = useState(false);
+  const [bookInfo, setBookInfo] = useState();
+  console.log(bookInfo);
+  console.log(showResume);
+
+  function bookInfoFunc() {
+    const { token } = userData;
+    const url = `${process.env.REACT_APP_API_BASE_URL}booking`;
+    const promise = axios.get(url, {
+      headers: {
+        authorization: `Bearer ${token}`
+      }
+    });
+    promise.then(response => {
+      const { data } = response;
+      setBookInfo(data);
+      data.userId === userData.userId ? setShowResume(true) : setShowResume(false);
+    });
+  }
 
   useEffect(() => {
     const { token } = userData;
@@ -28,7 +51,9 @@ export default function Hotel() {
       }
     }
     getsTicketType();
+    bookInfoFunc();
   }, []);
+  console.log(userData);
 
   if (!isPayed) {
     return (
@@ -37,23 +62,24 @@ export default function Hotel() {
         <LayoutWrapper>
           <NotPaid />
         </LayoutWrapper>
-
       </>
     );
   }
 
   if (ticketType) {
-    return (
+    return !showResume ? (
       <>
         <StyledTypography variant="h4"> Escolha de hotel e quarto </StyledTypography>
         <LayoutWrapper>
           {ticketType.isRemote == true ? <DoesNotIncludeHotel /> : <HotelLayout setHotelId={setHotelId} />}
         </LayoutWrapper>
-        {hotelId === null ? '' : <Rooms setRoomId={setRoomId}  hotelId={hotelId} />}
-        {roomId === null ? '' : <BookRoom roomId={roomId} bookingId={bookingId} setBookingId={setBookingId}/>}
+        {hotelId === null ? '' : <Rooms setRoomId={setRoomId} hotelId={hotelId} />}
+        {roomId === null ? '' : <BookRoom setShowResume={setShowResume} roomId={roomId} bookingId={bookingId} setBookingId={setBookingId} />}
       </>
+    ) : (
+      <BookResume roomInfo={bookInfo.Room}/>
     );
-  };
+  }
 }
 
 export const LayoutWrapper = styled.div`
@@ -61,7 +87,7 @@ export const LayoutWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  gap:4px;
+  gap: 4px;
   @media (max-width: 600px) {
     > div {
       width: 100%;
