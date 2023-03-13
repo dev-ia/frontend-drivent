@@ -78,4 +78,7 @@ const HotelCard = styled.div`
     overflow: hidden;
     border-radius: 5px;
   }
+  span {
+    flex-wrap:wrap;
+  }
 `;
