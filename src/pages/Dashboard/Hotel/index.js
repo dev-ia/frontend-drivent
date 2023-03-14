@@ -8,10 +8,9 @@ import { useContext, useEffect, useState } from 'react';
 import BookRoom from '../../../components/Dashboard/Rooms/BookRoom';
 import UserContext from '../../../contexts/UserContext';
 import { getTickets } from '../../../services/ticketApi';
-import { getBooking } from '../../../services/bookingApi';
-import useToken from '../../../hooks/useToken';
 import BookResume from '../../../components/Dashboard/Rooms/BookResume';
 import axios from 'axios';
+import { getBooking } from '../../../services/bookingApi';
 
 export default function Hotel() {
   const { userData } = useContext(UserContext);
@@ -22,38 +21,27 @@ export default function Hotel() {
   const [hotelId, setHotelId] = useState(null);
   const [showResume, setShowResume] = useState(false);
   const [bookInfo, setBookInfo] = useState();
-  console.log(bookInfo);
-  console.log(showResume);
+  const { token } = userData;
 
-  function bookInfoFunc() {
-    const { token } = userData;
-    const url = `${process.env.REACT_APP_API_BASE_URL}booking`;
-    const promise = axios.get(url, {
-      headers: {
-        authorization: `Bearer ${token}`
-      }
-    });
-    promise.then(response => {
-      const { data } = response;
-      setBookInfo(data);
-      data.userId === userData.userId ? setShowResume(true) : setShowResume(false);
-    });
+  async function bookInfoFunc() {
+    const data = await getBooking(token);
+    setBookInfo(data);
+  }
+
+  async function getsTicketType() {
+    const ticket = await getTickets(token);
+    setTicketType(ticket.TicketType);
+    if (ticket.status === 'PAID') {
+      setIsPayed(true);
+    }
   }
 
   useEffect(() => {
-    const { token } = userData;
-    async function getsTicketType() {
-      const ticket = await getTickets(token);
-      console.log(ticket);
-      setTicketType(ticket.TicketType);
-      if (ticket.status === 'PAID') {
-        setIsPayed(true);
-      }
-    }
     getsTicketType();
-    bookInfoFunc();
+    if (showResume) {
+      bookInfoFunc();
+    }
   }, []);
-  console.log(userData);
 
   if (!isPayed) {
     return (
@@ -77,7 +65,7 @@ export default function Hotel() {
         {roomId === null ? '' : <BookRoom setShowResume={setShowResume} roomId={roomId} bookingId={bookingId} setBookingId={setBookingId} />}
       </>
     ) : (
-      <BookResume roomInfo={bookInfo.Room}/>
+      <BookResume roomInfo={bookInfo.Room} />
     );
   }
 }
