@@ -38,7 +38,7 @@ export default function Hotel() {
 
   useEffect(() => {
     getsTicketType();
-    if (showResume) {
+    if (!showResume) {
       bookInfoFunc();
     }
   }, []);
