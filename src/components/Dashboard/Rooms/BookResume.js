@@ -4,12 +4,21 @@ import UserContext from '../../../contexts/UserContext';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import HotelLayout from '../Hotel';
 
 export default function BookResume({ roomInfo }) {
-//   const [userData, setUserData] = useLocalStorage('userData', {});
+  //   const [userData, setUserData] = useLocalStorage('userData', {});
   const typeRoom = ['Single', 'Double', 'Triple', 'Quadruple'];
+  const [room, setRoom] = useState(false);
 
-  return (
+  function changeRoom() {
+    setRoom(true);
+  }
+  console.log(room);
+
+  return room === false ? (
     <StyledBody>
       <h4>Você já escolheu o seu quarto</h4>
       <StyledBox>
@@ -26,7 +35,12 @@ export default function BookResume({ roomInfo }) {
           <p>{roomInfo.capacity === 1 ? 'apenas você' : `você e mais ${roomInfo.capacity - 1}`}</p>
         </h6>
       </StyledBox>
+      <ReserveButton>
+        <ButtonFont onClick={() => changeRoom()}>TROCAR DE QUARTO</ButtonFont>
+      </ReserveButton>
     </StyledBody>
+  ) : (
+    <HotelLayout />
   );
 }
 
@@ -74,4 +88,33 @@ const StyledBox = styled.div`
     line-height: 14px;
     color: #3c3c3c;
   }
+`;
+
+const ReserveButton = styled.button`
+  position: relative;
+  all: unset;
+  width: 162px;
+  height: 37px;
+  background-color: #e0e0e0;
+  box-shadow: 0px 2px 10px 0px #00000040;
+  border-radius: 4px;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 97px;
+  margin-top: 30px;
+  margin-left: 6px;
+`;
+
+const ButtonFont = styled.div`
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  color: #000000;
+  letter-spacing: 0em;
+  text-align: center;
+  cursor: pointer;
 `;
