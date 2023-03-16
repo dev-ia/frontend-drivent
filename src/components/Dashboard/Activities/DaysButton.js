@@ -3,36 +3,35 @@ import useEvent from '../../../hooks/api/useEvent';
 import { useState } from 'react';
 
 export default function DaysButton() {
-  const events = useEvent(); 
+  const event = useEvent(); 
   const [selectedButton, setSelectedButton] = useState(null);
 
   function handleChoosenDay(evt, eventId) {
     evt.preventDefault();
     setSelectedButton(eventId);
   }
-  if(events) {
-    return (
-      <>
-        {events.map((event) => {
-          return (
-            <Button>
-              <ButtonFont onClick={(evt) => handleChoosenDay(evt, event.id)}>{}</ButtonFont>
-            </Button>
-          );
-        })
-        }
-      </>
-    );
-  }
+ 
+  return (
+    <>
+      <Button isActive={selectedButton === event.id} onClick={(evt) => handleChoosenDay(evt, event.id)}>
+        <ButtonFont>Sexta, 22/10</ButtonFont>
+      </Button>
+    </>
+  );
 }
 
 const Button = styled.button`
+    all:unset;
     position: absolute;
+    justify-content:center;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
     width: 131px;
     height: 37px;
-    background: #E0E0E0;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+    background-color: ${({ isActive }) => isActive ? '#FFD37D' : '#E0E0E0'};
     border-radius: 4px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
 `;
 
 const ButtonFont =  styled.span`
@@ -42,7 +41,5 @@ const ButtonFont =  styled.span`
     font-size: 14px;
     line-height: 16px;
     text-align: center;
-
     color: #000000;
-
 `;
