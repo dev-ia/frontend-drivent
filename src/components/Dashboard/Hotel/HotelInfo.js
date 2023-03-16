@@ -43,8 +43,7 @@ export const SubtitleFont = styled.span`
   text-align: left;
   margin-bottom: 2px!important;
   color: #3C3C3C;
-  `;
-  
+  `; 
 export const HotelFont = styled.span`
   font-family: 'Roboto';
   font-style: normal;
@@ -56,7 +55,6 @@ export const HotelFont = styled.span`
   margin-bottom: 10px!important;
   color: #343434;
   `;
-  
 export const InfoFont = styled.span`
   font-family: Roboto;
   font-size: 12px;
