@@ -22,7 +22,6 @@ export default function DaysButton() {
 
 const Button = styled.button`
     all:unset;
-    position: absolute;
     justify-content:center;
     cursor: pointer;
     display: flex;

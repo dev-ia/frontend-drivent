@@ -6,36 +6,97 @@ import { ReactComponent as GreyLine } from '../../../assets/SVGs/GreyLine.svg';
 export default function ActivitiesTable() {
   return (
     <>
-      <ActiviesPlace> Auditório Principal </ActiviesPlace>
-      <ActiviesContainer>
-        <ActivityContainer>
-          <BiggerContainer>
-            <ActivityName> Minecraft: montando o PC ideal</ActivityName>
-            <ActivityHour> 09:00 - 10:00</ActivityHour>
-          </BiggerContainer>
-          <Middle>
-            <GreyLine/>
-          </Middle>
-          <SmallerContainer>
-            <Group/>
-            <Vagas> 27 vagas </Vagas>
-          </SmallerContainer>
-        </ActivityContainer>
-        <ActivityContainer>
-          <BiggerContainer>
-            <ActivityName> LoL: montando o PC ideal</ActivityName>
-            <ActivityHour> 10:00 - 11:00</ActivityHour>
-          </BiggerContainer>
-          <Middle>
-            <GreyLine/>
-          </Middle>
-          <SmallerContainer>
-            <SoldOut/>
-            <NoVacancy> Esgotado </NoVacancy>
-          </SmallerContainer>
-        </ActivityContainer>
-      </ActiviesContainer>
-      
+      <NameRow>
+        <ActiviesPlace> Auditório Principal </ActiviesPlace>
+        <ActiviesPlace> Auditório Principal </ActiviesPlace>
+        <ActiviesPlace> Auditório Principal </ActiviesPlace>
+      </NameRow>
+      <TablesPositioning>
+        <ActiviesContainer>
+          <ActivityContainer>
+            <BiggerContainer>
+              <ActivityName> Minecraft: montando o PC ideal</ActivityName>
+              <ActivityHour> 09:00 - 10:00</ActivityHour>
+            </BiggerContainer>
+            <Middle>
+              <GreyLine/>
+            </Middle>
+            <SmallerContainer>
+              <Group/>
+              <Vagas> 27 vagas </Vagas>
+            </SmallerContainer>
+          </ActivityContainer>
+          <ActivityContainer>
+            <BiggerContainer>
+              <ActivityName> LoL: montando o PC ideal</ActivityName>
+              <ActivityHour> 10:00 - 11:00</ActivityHour>
+            </BiggerContainer>
+            <Middle>
+              <GreyLine/>
+            </Middle>
+            <SmallerContainer>
+              <SoldOut/>
+              <NoVacancy> Esgotado </NoVacancy>
+            </SmallerContainer>
+          </ActivityContainer>
+        </ActiviesContainer>
+        <ActiviesContainer>
+          <ActivityContainer>
+            <BiggerContainer>
+              <ActivityName> Minecraft: montando o PC ideal</ActivityName>
+              <ActivityHour> 09:00 - 10:00</ActivityHour>
+            </BiggerContainer>
+            <Middle>
+              <GreyLine/>
+            </Middle>
+            <SmallerContainer>
+              <Group/>
+              <Vagas> 27 vagas </Vagas>
+            </SmallerContainer>
+          </ActivityContainer>
+          <ActivityContainer>
+            <BiggerContainer>
+              <ActivityName> LoL: montando o PC ideal</ActivityName>
+              <ActivityHour> 10:00 - 11:00</ActivityHour>
+            </BiggerContainer>
+            <Middle>
+              <GreyLine/>
+            </Middle>
+            <SmallerContainer>
+              <SoldOut/>
+              <NoVacancy> Esgotado </NoVacancy>
+            </SmallerContainer>
+          </ActivityContainer>
+        </ActiviesContainer>
+        <ActiviesContainer>
+          <ActivityContainer>
+            <BiggerContainer>
+              <ActivityName> Minecraft: montando o PC ideal</ActivityName>
+              <ActivityHour> 09:00 - 10:00</ActivityHour>
+            </BiggerContainer>
+            <Middle>
+              <GreyLine/>
+            </Middle>
+            <SmallerContainer>
+              <Group/>
+              <Vagas> 27 vagas </Vagas>
+            </SmallerContainer>
+          </ActivityContainer>
+          <ActivityContainer>
+            <BiggerContainer>
+              <ActivityName> LoL: montando o PC ideal</ActivityName>
+              <ActivityHour> 10:00 - 11:00</ActivityHour>
+            </BiggerContainer>
+            <Middle>
+              <GreyLine/>
+            </Middle>
+            <SmallerContainer>
+              <SoldOut/>
+              <NoVacancy> Esgotado </NoVacancy>
+            </SmallerContainer>
+          </ActivityContainer>
+        </ActiviesContainer>
+      </TablesPositioning>
     </>
   );
 }
@@ -47,11 +108,12 @@ const ActiviesPlace = styled.span`
     line-height: 20px;
     letter-spacing: 0em;
     text-align: center;
+    display: center;
     color: #7B7B7B;
 `;
 
 const ActiviesContainer = styled.div`
-    width:864px;
+    width:288px;
     height:392px;
     display: flex;
     flex-wrap: wrap;
@@ -59,11 +121,8 @@ const ActiviesContainer = styled.div`
     background-color:#FFFFFF;
     border: 1px solid #D7D7D7;
     padding:10px 12px 11px;
-    margin-top:13px;
 `;
 const ActivityContainer = styled.div`
-  width: 265px;
-  height: 79px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -130,3 +189,20 @@ const NoVacancy = styled.span`
 const Middle = styled.div`
   margin-top:10px;
 `;
+const TablesPositioning = styled.div`
+  display:flex;
+  flex-wrap:table-row;
+  flex-direction:row;
+  justify-content:space-between;
+`;
+const NameRow = styled.div`
+  width:8864px;
+  height:40px;
+  margin-bottom:7px;
+  display:flex;
+  flex-wrap:table-row;
+  flex-direction:row;
+  justify-content:space-between;
+  margin-left:80px;
+`;
+

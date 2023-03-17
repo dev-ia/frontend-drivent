@@ -42,7 +42,8 @@ export default function Activities() {
       <>
         <StyledTypography variant="h4"> Escolha de atividades </StyledTypography>
         <LayoutWrapper>
-          {ticketType.isRemote == true ? <OnlineTicket/> : <ActivitiesLayout/>}
+          {<ActivitiesLayout/>}
+          {/* {ticketType.isRemote == true ? <OnlineTicket/> : <ActivitiesLayout/>} */}
         </LayoutWrapper>
       </>
     );
