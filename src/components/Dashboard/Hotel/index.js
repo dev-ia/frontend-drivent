@@ -23,7 +23,7 @@ export default function HotelLayout({ setHotelId }) {
         <HotelContainer>
           {hotels.map((hotel) => {
             return (
-              <BiggerContainer isActive={selectedHotel === hotel.id} onClick={(evt) => handleChooseHotel(evt, hotel.id)}>
+              <BiggerContainer key={hotel.id} isActive={selectedHotel === hotel.id} onClick={(evt) => handleChooseHotel(evt, hotel.id)}>
                 <HotelCard>
                   <figure >
                     <img className="hotelPhoto" src={hotel.image} alt={hotel.name} ></img>
