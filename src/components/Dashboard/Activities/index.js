@@ -27,9 +27,9 @@ export default function ActivitiesLayout() {
 const DaysContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
   flex-wrap: wrap;
   margin-top:23px;
+  justify-content:space-between;
 `;
 
 const AcitivitiesData = styled.div`
