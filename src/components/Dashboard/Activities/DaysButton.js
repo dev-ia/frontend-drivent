@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import useEvent from '../../../hooks/api/useEvent';
 import { useState } from 'react';
 
-export default function DaysButton() {
+export default function DaysButton({ day }) {
   const event = useEvent(); 
   const [selectedButton, setSelectedButton] = useState(null);
 
@@ -13,9 +13,11 @@ export default function DaysButton() {
  
   return (
     <>
-      <Button isActive={selectedButton === event.id} onClick={(evt) => handleChoosenDay(evt, event.id)}>
-        <ButtonFont>Sexta, 22/10</ButtonFont>
-      </Button>
+      <ButtonSection>
+        <Button isActive={selectedButton === event.id} onClick={(evt) => handleChoosenDay(evt, event.id)}>
+          <ButtonFont>{day}</ButtonFont>
+        </Button>
+      </ButtonSection>
     </>
   );
 }
@@ -41,4 +43,10 @@ const ButtonFont =  styled.span`
     line-height: 16px;
     text-align: center;
     color: #000000;
+`;
+
+const ButtonSection = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction:row;
 `;

@@ -197,7 +197,7 @@ const TablesPositioning = styled.div`
 `;
 const NameRow = styled.div`
   width:8864px;
-  height:40px;
+  height:20px;
   margin-bottom:7px;
   display:flex;
   flex-wrap:table-row;
