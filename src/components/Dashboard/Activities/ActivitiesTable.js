@@ -1,9 +1,18 @@
 import styled from 'styled-components';
+import { useState } from 'react';
+import useActivity from '../../../hooks/api/useActivity';
 import { ReactComponent as SoldOut } from '../../../assets/SVGs/SoldOut.svg';
 import { ReactComponent as Group } from '../../../assets/SVGs/Group.svg';
 import { ReactComponent as GreyLine } from '../../../assets/SVGs/GreyLine.svg';
 
 export default function ActivitiesTable() {
+  const activity = useActivity();
+  const [enrolled, setEnrollment] = useState(null);
+
+  function handleChosenActivity(evt, activityId) {
+    evt.preventDefault();
+    setEnrollment(activityId);
+  }
   return (
     <>
       <NameRow>
@@ -13,7 +22,7 @@ export default function ActivitiesTable() {
       </NameRow>
       <TablesPositioning>
         <ActiviesContainer>
-          <ActivityContainer>
+          <ActivityContainer isActive={enrolled === activity.id} onClick={(evt) => handleChosenActivity(evt, activity.id)}>
             <BiggerContainer>
               <ActivityName> Minecraft: montando o PC ideal</ActivityName>
               <ActivityHour> 09:00 - 10:00</ActivityHour>
@@ -26,7 +35,7 @@ export default function ActivitiesTable() {
               <Vagas> 27 vagas </Vagas>
             </SmallerContainer>
           </ActivityContainer>
-          <ActivityContainer>
+          <ActivityContainer isActive={enrolled === activity.id} onClick={(evt) => handleChosenActivity(evt, activity.id)}>
             <BiggerContainer>
               <ActivityName> LoL: montando o PC ideal</ActivityName>
               <ActivityHour> 10:00 - 11:00</ActivityHour>
@@ -41,7 +50,7 @@ export default function ActivitiesTable() {
           </ActivityContainer>
         </ActiviesContainer>
         <ActiviesContainer>
-          <ActivityContainer>
+          <ActivityContainer isActive={enrolled === activity.id} onClick={(evt) => handleChosenActivity(evt, activity.id)}>
             <BiggerContainer>
               <ActivityName> Minecraft: montando o PC ideal</ActivityName>
               <ActivityHour> 09:00 - 10:00</ActivityHour>
@@ -54,7 +63,7 @@ export default function ActivitiesTable() {
               <Vagas> 27 vagas </Vagas>
             </SmallerContainer>
           </ActivityContainer>
-          <ActivityContainer>
+          <ActivityContainer isActive={enrolled === activity.id} onClick={(evt) => handleChosenActivity(evt, activity.id)}>
             <BiggerContainer>
               <ActivityName> LoL: montando o PC ideal</ActivityName>
               <ActivityHour> 10:00 - 11:00</ActivityHour>
@@ -69,7 +78,7 @@ export default function ActivitiesTable() {
           </ActivityContainer>
         </ActiviesContainer>
         <ActiviesContainer>
-          <ActivityContainer>
+          <ActivityContainer isActive={enrolled === activity.id} onClick={(evt) => handleChosenActivity(evt, activity.id)}>
             <BiggerContainer>
               <ActivityName> Minecraft: montando o PC ideal</ActivityName>
               <ActivityHour> 09:00 - 10:00</ActivityHour>
@@ -82,7 +91,7 @@ export default function ActivitiesTable() {
               <Vagas> 27 vagas </Vagas>
             </SmallerContainer>
           </ActivityContainer>
-          <ActivityContainer>
+          <ActivityContainer isActive={enrolled === activity.id} onClick={(evt) => handleChosenActivity(evt, activity.id)}>
             <BiggerContainer>
               <ActivityName> LoL: montando o PC ideal</ActivityName>
               <ActivityHour> 10:00 - 11:00</ActivityHour>
@@ -127,7 +136,7 @@ const ActivityContainer = styled.div`
   flex-wrap: wrap;
   flex-direction: row;
   justify-content:space-around;
-  background: #F1F1F1;
+  background-color: ${({ isActive }) => isActive ? '#D0FFDB' : '#F1F1F1'};
   border-radius: 5px;
   margin-bottom:10px;
   padding-left:10px;
