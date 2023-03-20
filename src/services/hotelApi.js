@@ -13,10 +13,12 @@ export async function getHotels(token) {
 export async function getRoomsWithHotelId(token, hotelId) {
   const response = await api.get(`/hotels/${hotelId}`, {
     headers: {
-      authorization: `Bearer ${token}`
-    }
+      authorization: `Bearer ${token}`,
+    },
   });
+  // console.log('Rooms');
+  // const Rooms = response.data;
+  // console.log(Rooms.Rooms);
 
   return response.data;
 }
-

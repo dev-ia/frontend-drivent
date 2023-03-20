@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import useToken from '../../../hooks/useToken';
 import { postBooking, upsertBooking } from '../../../services/bookingApi';
 import { ButtonFont, PaymentWrapper, ReserveButton } from '../Reservation';
@@ -13,8 +14,10 @@ export default function BookRoom({ roomId, bookingId, setBookingId }) {
 
       if (bookingId !== null) {
         newBookingId = await upsertBooking(bookingId, roomId, token);
+        toast('Quarto atualizado com sucesso!');
       } else {
         newBookingId = await postBooking(roomId, token);
+        toast('Quarto reservado com sucesso!');
       }
 
       setBookingId(newBookingId.bookingId);

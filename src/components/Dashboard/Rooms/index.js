@@ -16,7 +16,7 @@ export default function Rooms({ hotelId, setRoomId }) {
         setRooms(Rooms);
       } catch (error) {
         console.log(error.response.data);
-      };
+      }
     }
     getsRooms();
   }, [hotelId]);
